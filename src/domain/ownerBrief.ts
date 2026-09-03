@@ -165,7 +165,7 @@ export function buildOwnerBrief(state: AppState, options: OwnerBriefOptions, met
   guard = 0;
   while (out.words > options.maximumWords && guard++ < 50) {
     const longest = ordered.reduce((best, s) => (countWords(s.lines.join(' ')) > countWords(best.lines.join(' ')) ? s : best), ordered[0]);
-    const words = longest.lines.join(' ').split(/s+/).filter((w) => w.length > 0);
+    const words = longest.lines.join(' ').split(/\s+/).filter((w) => w.length > 0);
     if (words.length <= 6) break;
     const keep = Math.max(6, words.length - (out.words - options.maximumWords) - 1);
     longest.lines = [words.slice(0, keep).join(' ') + '…'];
