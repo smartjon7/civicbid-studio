@@ -1,6 +1,6 @@
 {
   "url": "https://smartjon7.github.io/civicbid-studio/",
-  "startedAt": "2026-09-03T05:18:54.219Z",
+  "startedAt": "2026-09-03T05:27:47.408Z",
   "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
   "discovered": [
     {
@@ -128,7 +128,7 @@
         "minimumValueUsd": 20000000,
         "maximumDaysToDeadline": 45
       },
-      "ms": 33,
+      "ms": 53,
       "ok": true,
       "summary": "2 of 3 opportunities match: Rail Fastener Renewal Program (78, Conditional GO); Station Accessibility Modernization (53, NO-GO).",
       "stateVersion": 1,
@@ -143,7 +143,7 @@
           "opp-station-accessibility"
         ]
       },
-      "ms": 261,
+      "ms": 31,
       "ok": true,
       "summary": "Rail Fastener Renewal Program is the strongest at 78 (Conditional GO); Station Accessibility Modernization 53 (NO-GO).",
       "stateVersion": 2,
@@ -155,7 +155,7 @@
       "input": {
         "opportunityId": "opp-rail-fastener-renewal"
       },
-      "ms": 35,
+      "ms": 125,
       "ok": true,
       "summary": "Opened Rail Fastener Renewal Program: score 78, Conditional GO, 1 mitigable gap, 0 unmitigable gaps.",
       "stateVersion": 3,
@@ -165,7 +165,7 @@
     {
       "tool": "civicbid_get_context",
       "input": {},
-      "ms": 179,
+      "ms": 54,
       "ok": true,
       "summary": "Rail Fastener Renewal Program: score 78 (Conditional GO), 1 mitigable gap, 0 unmitigable gaps, 0 assignments, 0 risks; decision none.",
       "stateVersion": 3,
@@ -177,7 +177,7 @@
       "input": {
         "mandatoryOnly": true
       },
-      "ms": 37,
+      "ms": 34,
       "ok": true,
       "summary": "10 requirements for Rail Fastener Renewal Program (mandatory only): 2 satisfied, 7 open gaps, 1 at risk, 0 assigned, 0 complete.",
       "stateVersion": 3,
@@ -197,7 +197,7 @@
         "mode": "replace",
         "reason": "Bonding, JV approval, PM availability, safety plan, and schedule are the items that can disqualify this bid."
       },
-      "ms": 64,
+      "ms": 61,
       "ok": true,
       "summary": "Highlighted 5 requirements for the human: RAIL-01, RAIL-07, RAIL-04, RAIL-05, RAIL-09.",
       "stateVersion": 4,
@@ -212,12 +212,12 @@
         "dueDate": "2026-09-12",
         "note": "Obtain combined JV surety letter of at least $30M."
       },
-      "ms": 41,
+      "ms": 34,
       "ok": true,
       "summary": "Assigned RAIL-01 to Finance & Bonding, due 2026-09-12; the requirement is now assigned.",
       "stateVersion": 5,
       "error": null,
-      "dataPreview": "{\"assignment\":{\"requirementId\":\"RAIL-01\",\"opportunityId\":\"opp-rail-fastener-renewal\",\"ownerRole\":\"Finance & Bonding\",\"dueDate\":\"2026-09-12\",\"note\":\"Obtain combined JV surety letter of at least $30M.\",\"assignedBy\":\"agent\",\"createdAt\":\"2026-09-03T05:19:01.720Z\",\"updatedAt\":\"2026-09-03T05:19:01.720Z\"},\"changedFields\":[\"ownerRole\",\"dueDate\",\"note\"],\"requirementStatus\":\"assigned\",\"warnings\":[]}"
+      "dataPreview": "{\"assignment\":{\"requirementId\":\"RAIL-01\",\"opportunityId\":\"opp-rail-fastener-renewal\",\"ownerRole\":\"Finance & Bonding\",\"dueDate\":\"2026-09-12\",\"note\":\"Obtain combined JV surety letter of at least $30M.\",\"assignedBy\":\"agent\",\"createdAt\":\"2026-09-03T05:28:58.888Z\",\"updatedAt\":\"2026-09-03T05:28:58.888Z\"},\"changedFields\":[\"ownerRole\",\"dueDate\",\"note\"],\"requirementStatus\":\"assigned\",\"warnings\":[]}"
     },
     {
       "tool": "civicbid_assign_requirement",
@@ -227,12 +227,12 @@
         "dueDate": "2026-09-12",
         "note": "Obtain combined JV surety letter of at least $30M."
       },
-      "ms": 33,
+      "ms": 9,
       "ok": true,
       "summary": "Already assigned exactly this way: RAIL-01 to Finance & Bonding, due 2026-09-12.",
       "stateVersion": 5,
       "error": null,
-      "dataPreview": "{\"assignment\":{\"requirementId\":\"RAIL-01\",\"opportunityId\":\"opp-rail-fastener-renewal\",\"ownerRole\":\"Finance & Bonding\",\"dueDate\":\"2026-09-12\",\"note\":\"Obtain combined JV surety letter of at least $30M.\",\"assignedBy\":\"agent\",\"createdAt\":\"2026-09-03T05:19:01.720Z\",\"updatedAt\":\"2026-09-03T05:19:01.720Z\"},\"changedFields\":[],\"requirementStatus\":\"assigned\",\"warnings\":[]}"
+      "dataPreview": "{\"assignment\":{\"requirementId\":\"RAIL-01\",\"opportunityId\":\"opp-rail-fastener-renewal\",\"ownerRole\":\"Finance & Bonding\",\"dueDate\":\"2026-09-12\",\"note\":\"Obtain combined JV surety letter of at least $30M.\",\"assignedBy\":\"agent\",\"createdAt\":\"2026-09-03T05:28:58.888Z\",\"updatedAt\":\"2026-09-03T05:28:58.888Z\"},\"changedFields\":[],\"requirementStatus\":\"assigned\",\"warnings\":[]}"
     },
     {
       "tool": "civicbid_assign_requirement",
@@ -242,12 +242,12 @@
         "dueDate": "2026-09-19",
         "note": "File the agency JV approval package seven days before bid."
       },
-      "ms": 54,
+      "ms": 32,
       "ok": true,
       "summary": "Assigned RAIL-07 to JV & Legal, due 2026-09-19; the requirement is now assigned.",
       "stateVersion": 6,
       "error": null,
-      "dataPreview": "{\"assignment\":{\"requirementId\":\"RAIL-07\",\"opportunityId\":\"opp-rail-fastener-renewal\",\"ownerRole\":\"JV & Legal\",\"dueDate\":\"2026-09-19\",\"note\":\"File the agency JV approval package seven days before bid.\",\"assignedBy\":\"agent\",\"createdAt\":\"2026-09-03T05:19:01.799Z\",\"updatedAt\":\"2026-09-03T05:19:01.799Z\"},\"changedFields\":[\"ownerRole\",\"dueDate\",\"note\"],\"requirementStatus\":\"assigned\",\"warnings\":[]}"
+      "dataPreview": "{\"assignment\":{\"requirementId\":\"RAIL-07\",\"opportunityId\":\"opp-rail-fastener-renewal\",\"ownerRole\":\"JV & Legal\",\"dueDate\":\"2026-09-19\",\"note\":\"File the agency JV approval package seven days before bid.\",\"assignedBy\":\"agent\",\"createdAt\":\"2026-09-03T05:28:58.928Z\",\"updatedAt\":\"2026-09-03T05:28:58.928Z\"},\"changedFields\":[\"ownerRole\",\"dueDate\",\"note\"],\"requirementStatus\":\"assigned\",\"warnings\":[]}"
     },
     {
       "tool": "civicbid_assign_requirement",
@@ -262,7 +262,7 @@
       "summary": "Assigned RAIL-05 to Safety Director, due 2026-09-15; the requirement is now assigned.",
       "stateVersion": 7,
       "error": null,
-      "dataPreview": "{\"assignment\":{\"requirementId\":\"RAIL-05\",\"opportunityId\":\"opp-rail-fastener-renewal\",\"ownerRole\":\"Safety Director\",\"dueDate\":\"2026-09-15\",\"note\":\"Draft the live-track safety plan.\",\"assignedBy\":\"agent\",\"createdAt\":\"2026-09-03T05:19:01.849Z\",\"updatedAt\":\"2026-09-03T05:19:01.849Z\"},\"changedFields\":[\"ownerRole\",\"dueDate\",\"note\"],\"requirementStatus\":\"assigned\",\"warnings\":[]}"
+      "dataPreview": "{\"assignment\":{\"requirementId\":\"RAIL-05\",\"opportunityId\":\"opp-rail-fastener-renewal\",\"ownerRole\":\"Safety Director\",\"dueDate\":\"2026-09-15\",\"note\":\"Draft the live-track safety plan.\",\"assignedBy\":\"agent\",\"createdAt\":\"2026-09-03T05:28:58.960Z\",\"updatedAt\":\"2026-09-03T05:28:58.960Z\"},\"changedFields\":[\"ownerRole\",\"dueDate\",\"note\"],\"requirementStatus\":\"assigned\",\"warnings\":[]}"
     },
     {
       "tool": "civicbid_assign_requirement",
@@ -272,12 +272,12 @@
         "dueDate": "2026-09-10",
         "note": "Name the PM and document release from backlog."
       },
-      "ms": 33,
+      "ms": 41,
       "ok": true,
       "summary": "Assigned RAIL-04 to Operations Lead, due 2026-09-10; the requirement is now assigned.",
       "stateVersion": 8,
       "error": null,
-      "dataPreview": "{\"assignment\":{\"requirementId\":\"RAIL-04\",\"opportunityId\":\"opp-rail-fastener-renewal\",\"ownerRole\":\"Operations Lead\",\"dueDate\":\"2026-09-10\",\"note\":\"Name the PM and document release from backlog.\",\"assignedBy\":\"agent\",\"createdAt\":\"2026-09-03T05:19:01.893Z\",\"updatedAt\":\"2026-09-03T05:19:01.893Z\"},\"changedFields\":[\"ownerRole\",\"dueDate\",\"note\"],\"requirementStatus\":\"assigned\",\"warnings\":[]}"
+      "dataPreview": "{\"assignment\":{\"requirementId\":\"RAIL-04\",\"opportunityId\":\"opp-rail-fastener-renewal\",\"ownerRole\":\"Operations Lead\",\"dueDate\":\"2026-09-10\",\"note\":\"Name the PM and document release from backlog.\",\"assignedBy\":\"agent\",\"createdAt\":\"2026-09-03T05:28:59.004Z\",\"updatedAt\":\"2026-09-03T05:28:59.004Z\"},\"changedFields\":[\"ownerRole\",\"dueDate\",\"note\"],\"requirementStatus\":\"assigned\",\"warnings\":[]}"
     },
     {
       "tool": "civicbid_upsert_risk",
@@ -294,7 +294,7 @@
         "ownerRole": "Finance & Bonding",
         "status": "open"
       },
-      "ms": 54,
+      "ms": 44,
       "ok": true,
       "summary": "Added high risk \"Single-project bonding is $5M short of the minimum\" owned by Finance & Bonding (open).",
       "stateVersion": 9,
@@ -315,7 +315,7 @@
         "ownerRole": "Operations Lead",
         "status": "mitigating"
       },
-      "ms": 65,
+      "ms": 42,
       "ok": true,
       "summary": "Added medium risk \"Project manager availability at 82% backlog\" owned by Operations Lead (mitigating).",
       "stateVersion": 10,
@@ -336,12 +336,12 @@
         ],
         "confidence": 68
       },
-      "ms": 68,
+      "ms": 42,
       "ok": true,
       "summary": "Staged Conditional GO for Rail Fastener Renewal Program at 68% confidence; human approval is still required.",
       "stateVersion": 11,
       "error": null,
-      "dataPreview": "{\"decision\":{\"id\":\"dec-mtl2rrfq-c-g143\",\"recommendation\":\"conditional_go\",\"recommendationLabel\":\"Conditional GO\",\"rationale\":\"Rail Fastener Renewal scores highest and every gate is passable, but bonding is $5M short without a confirmed JV partner and the JV approval package has not started. Pursue on condition that the JV package is confirmed.\",\"conditions\":[\"Confirm a qualified JV partner with co"
+      "dataPreview": "{\"decision\":{\"id\":\"dec-mtl34k54-c-bnbo\",\"recommendation\":\"conditional_go\",\"recommendationLabel\":\"Conditional GO\",\"rationale\":\"Rail Fastener Renewal scores highest and every gate is passable, but bonding is $5M short without a confirmed JV partner and the JV approval package has not started. Pursue on condition that the JV package is confirmed.\",\"conditions\":[\"Confirm a qualified JV partner with co"
     },
     {
       "tool": "civicbid_generate_owner_brief",
@@ -352,7 +352,7 @@
           "next_actions"
         ]
       },
-      "ms": 43,
+      "ms": 50,
       "ok": false,
       "summary": "Human approval is still required. The owner brief can only be generated from an approved decision.",
       "stateVersion": 11,
@@ -369,7 +369,7 @@
         "detailLevel": "summary",
         "sinceStateVersion": 11
       },
-      "ms": 24,
+      "ms": 36,
       "ok": true,
       "summary": "State version 12: Rail Fastener Renewal Program open at 87 (GO); decision pending. Since version 11: the human confirmed the JV package; Rail Fastener Renewal Program moved 79 to 87 (Conditional GO to GO).",
       "stateVersion": 12,
@@ -387,12 +387,12 @@
         "assumptions": [],
         "confidence": 84
       },
-      "ms": 19,
+      "ms": 34,
       "ok": true,
-      "summary": "Staged GO for Rail Fastener Renewal Program at 84% confidence (supersedes dec-mtl2rrfq-c-g143); human approval is still required.",
+      "summary": "Staged GO for Rail Fastener Renewal Program at 84% confidence (supersedes dec-mtl34k54-c-bnbo); human approval is still required.",
       "stateVersion": 13,
       "error": null,
-      "dataPreview": "{\"decision\":{\"id\":\"dec-mtl2rsb1-h-9ou8\",\"recommendation\":\"go\",\"recommendationLabel\":\"GO\",\"rationale\":\"With the JV partner confirmed and combined bonding of $60M, the bonding gate passes and no mandatory capability gaps remain. The remaining items are assigned deliverables with owners and dates.\",\"conditions\":[\"File the JV approval package by September 22\"],\"assumptions\":[],\"confidence\":84,\"stagedA"
+      "dataPreview": "{\"decision\":{\"id\":\"dec-mtl34kxv-h-09xd\",\"recommendation\":\"go\",\"recommendationLabel\":\"GO\",\"rationale\":\"With the JV partner confirmed and combined bonding of $60M, the bonding gate passes and no mandatory capability gaps remain. The remaining items are assigned deliverables with owners and dates.\",\"conditions\":[\"File the JV approval package by September 22\"],\"assumptions\":[],\"confidence\":84,\"stagedA"
     },
     {
       "tool": "civicbid_generate_owner_brief",
@@ -405,19 +405,19 @@
           "next_actions"
         ]
       },
-      "ms": 70,
+      "ms": 59,
       "ok": true,
-      "summary": "Generated the owner brief \"Owner Brief — Rail Fastener Renewal Program — GO\" (242 words) from approved decision dec-mtl2rsb1-h-9ou8.",
+      "summary": "Generated the owner brief \"Owner Brief — Rail Fastener Renewal Program — GO\" (253 words) from approved decision dec-mtl34kxv-h-09xd.",
       "stateVersion": 15,
       "error": null,
-      "dataPreview": "{\"brief\":{\"id\":\"brief-mtl2s5as-k-0nq3\",\"title\":\"Owner Brief — Rail Fastener Renewal Program — GO\",\"wordCount\":242,\"maximumWords\":260,\"sections\":[{\"heading\":\"Approved decision\",\"body\":\"GO on Rail Fastener Renewal Program (North River Transit Authority, $28M, bids due Tuesday, September 29, 2026, 26 days out).\"},{\"heading\":\"Top disqualification risks\",\"body\":\"At risk: Named project manager with rail"
+      "dataPreview": "{\"brief\":{\"id\":\"brief-mtl34nbs-k-isb1\",\"title\":\"Owner Brief — Rail Fastener Renewal Program — GO\",\"wordCount\":253,\"maximumWords\":260,\"sections\":[{\"heading\":\"Approved decision\",\"body\":\"GO on Rail Fastener Renewal Program (North River Transit Authority, $28M, bids due Tuesday, September 29, 2026, 26 days out).\"},{\"heading\":\"Why this opportunity\",\"body\":\"With the JV partner confirmed and combined bon"
     },
     {
       "tool": "civicbid_reset_demo",
       "input": {
         "confirm": "RESET_CIVICBID_DEMO"
       },
-      "ms": 44,
+      "ms": 27,
       "ok": true,
       "summary": "Reset the demonstration: every assignment, risk, decision, and brief was cleared and the seed company profile restored.",
       "stateVersion": 16,
@@ -428,12 +428,12 @@
   "human": [
     {
       "action": "Confirm JV package",
-      "ms": 551,
+      "ms": 449,
       "stateVersionAfter": 12
     },
     {
       "action": "Approve decision",
-      "ms": 12946,
+      "ms": 503,
       "stateVersionAfter": 14
     }
   ],
@@ -503,7 +503,7 @@
     {
       "name": "owner brief generated after approval",
       "pass": true,
-      "detail": "words=242"
+      "detail": "words=253"
     },
     {
       "name": "state persists across refresh",
@@ -531,7 +531,7 @@
       "detail": ""
     }
   ],
-  "finishedAt": "2026-09-03T05:19:20.934Z",
+  "finishedAt": "2026-09-03T05:29:07.097Z",
   "summary": {
     "checks": 18,
     "passed": 18,

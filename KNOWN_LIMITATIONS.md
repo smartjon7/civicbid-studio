@@ -14,16 +14,18 @@ Honest list, as of September 3, 2026.
 
 - **WebMCP works only in supported browsers.** The ChatGPT desktop app's built-in browser with GPT-5.6 Sol or Terra (Luna has site tools disabled), or Chrome 149+ with `chrome://flags/#enable-webmcp-testing`. Everywhere else the page shows a fallback banner; the Tool Console still runs the same handlers but is not WebMCP.
 - **Annotations are limited to `readOnlyHint`.** `destructiveHint` is not in the current type definitions, so the reset tool relies on a confirmation string.
+- **`civicbid_compare_opportunities` is annotated read-only** because it changes no business data, but it does switch the visible panel to the comparison and records an activity event. The description says so.
 - **GitHub Pages path base.** The build assumes `/civicbid-studio/`. Hosting elsewhere needs `VITE_BASE` set at build time.
 - **Top-level document only.** Tools registered inside iframes are not exposed by the platforms; the app registers from the top-level page.
 
-## To be confirmed by the owner
+## What has and has not been verified in a browser
 
-- End-to-end runs in the ChatGPT desktop app and in Chrome 149+ are pending the owner's own testing. Domain behaviour is proven by automated tests; browser discovery and the three-prompt sequence need a person in a supported browser.
-- Video and screenshots are pending.
+- **Verified:** Chrome 152 on Windows with WebMCP enabled, driven by Playwright against the production URL. `document.modelContext.getTools()` returned all thirteen tools; the entire three-prompt sequence was executed through `document.modelContext.executeTool()`; the two human steps were real clicks; persistence across refresh, re-registration after refresh, reset, and the absence of console errors were checked. Evidence: `artifacts/test-evidence/webmcp-production-evidence.json`.
+- **Not yet verified by a person:** the ChatGPT desktop app's built-in browser with GPT-5.6 Sol or Terra. The tool contracts follow the published ChatGPT site-tools guidance (top-level registration, JSON Schema inputs, plain-object results), but a live ChatGPT session has not been run by the owner at the time of writing.
+- **The produced demo video** shows the site tools executing through Chrome's WebMCP API under a script, with real human clicks, not a ChatGPT conversation. It is an honest recording of the implementation; a ChatGPT re-recording would be stronger and the script for it is in `DEMO_SCRIPT.md`.
 
 ## Open items
 
-- **Owner brief word budget can overrun on a rich workspace.** Once every section is trimmed to one line, the last-resort step shortens the single longest line only once. With four assignments, three risks, two human profile changes, and a superseded decision, a 150-word budget produced 170 words; 260 and 400 held. A patch that repeats the last-resort trim until the budget is met is recorded in TEST_RESULTS.md; `tests/domain-brief.test.ts` carries a todo for the guarantee.
 - **Activity log capped at 400 events.** Older events fall off; the state version keeps counting. Fine for a demo, not for a long-running workspace.
 - **No undo.** Every write is a new version; there is no command to revert one. Reset restores the seed.
+- **Owner brief trimming is mechanical.** Within the word budget, lower-priority sections lose lines first and, as a last resort, the longest line is shortened with an ellipsis. Emphasis protects sections from trimming but cannot add words back.

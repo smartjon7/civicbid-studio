@@ -55,4 +55,12 @@ The repository was created on September 3, 2026 during the submission period. Al
 
 ## Video
 
-To be added (YouTube, under three minutes, with narration).
+YouTube link to be added at submission (under three minutes, with narration). The produced file `CivicBid-Studio-WebMCP-demo.mp4` records the live site in Chrome with WebMCP enabled: every tool call runs through `document.modelContext.executeTool`, the human steps are real clicks, and the narration follows DEMO_SCRIPT.md.
+
+## Suggested Devpost images (in order)
+
+1. `artifacts/screenshots/01-workspace.png` — the workspace with the pending decision and the timeline
+2. `artifacts/screenshots/09-site-tools.png` — thirteen tools discovered by the browser
+3. `artifacts/screenshots/02-comparison.png` — the comparison
+4. `artifacts/screenshots/05-after-jv.png` — the human change and the stale warning
+5. `artifacts/screenshots/07-owner-brief.png` — the owner brief

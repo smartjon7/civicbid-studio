@@ -10,31 +10,32 @@ Deadline: September 3, 2026, 4:00 PM Eastern.
 - [x] Store, persistence (localStorage, schema-versioned), selectors, owner brief builder.
 - [x] Calibration test pinning the seed scores and the JV move.
 - [x] Domain tests: evaluation, reducer, brief, persistence.
-- [x] Secret scan script.
-- [x] GitHub Actions workflow: typecheck, lint, test, build, deploy to Pages.
+- [x] Secret scan script, wired into `npm run check` and the workflow.
+- [x] GitHub Actions workflow: typecheck, lint, test, secret scan, build, deploy to Pages.
 - [x] Documentation: README, SUBMISSION, DEMO_SCRIPT, JUDGE_TEST, QA_CHECKLIST, STATUS, DECISIONS, TEST_RESULTS, KNOWN_LIMITATIONS, SUBMISSION_CHECKLIST, docs/ARCHITECTURE, docs/TOOL_CONTRACTS, docs/BUILD_BRIEF.
 - [x] WebMCP runtime: thirteen tool definitions, registration from `src/main.tsx`, execute, discovery read-back, result envelope (`src/webmcp/`).
 - [x] Interface: header badge, Site tools panel, Tool Console, left rail with profile and Confirm JV package, workspace (scorecard, matrix, risks), pending-decision card with human-only Approve/Reject, timeline, brief panel (`src/components/`, `src/app/`).
 - [x] Judge-sequence automated test with a fake `document.modelContext` (`tests/demo-sequence.test.ts`), plus `tests/human-only-approval.test.ts` and `tests/webmcp-tools.test.ts`.
-- [x] Typecheck, lint, full test suite, and build green locally on the integrated tree (September 3, 2026, about 1:05 AM Eastern).
-- [ ] `npm run check` green on the submission commit and in GitHub Actions.
-- [ ] Live URL verified in the ChatGPT desktop browser and Chrome 149+; badge reads 13 registered.
-- [ ] Screenshots 01–09 captured; README hero image present.
-- [ ] Video recorded (under three minutes), uploaded to YouTube, linked in README and SUBMISSION.
-- [ ] Devpost form submitted with SUBMISSION.md copy, repository link, live link, video link.
+- [x] Typecheck, lint, full test suite (121), secret scan, and build green on the application commit and in GitHub Actions.
+- [x] Live URL verified in Chrome 152 with WebMCP enabled: `getTools()` returns 13, full judge sequence through `executeTool`, human clicks, persistence, reset, no console errors.
+- [x] Screenshots 01–10 captured from production; README hero image present.
+- [x] Demo video rendered from production (under three minutes, narrated).
+- [ ] Jonathan: verify in the ChatGPT desktop browser (GPT-5.6 Sol or Terra).
+- [ ] Jonathan: upload the video to YouTube (Public) and paste the link into the Devpost form.
+- [ ] Jonathan: submit the Devpost form with SUBMISSION.md copy, repository link, live link, video link, screenshots.
 
-## P1 — should have
+## P1 — done or deferred
 
-- [ ] Apply the owner-brief word-budget patch (repeat the last-resort trim) and turn the todo in `tests/domain-brief.test.ts` into a real test.
-- [ ] Add `"scan:secrets": "node scripts/scan-secrets.mjs"` to `package.json` and run it in the workflow.
-- [ ] Fill `artifacts/test-evidence/TEST_REPORT.md` with the final run output and browser evidence.
-- [ ] Keyboard focus and contrast pass on the pending card, matrix, and console.
-- [ ] Replace the README template text on any remaining generated files.
+- [x] Owner-brief word budget guaranteed at 150–400 (last-resort trim repeats); test converted from todo to a real guarantee.
+- [x] `scan:secrets` in `package.json` and the workflow.
+- [x] `artifacts/test-evidence/TEST_REPORT.md` filled from real runs.
+- [x] Copy and print for the owner brief; per-row human Assign/Change; Generate brief button after approval.
+- [ ] Keyboard focus and contrast pass beyond what the build already provides (deferred; not blocking).
 
-## P2 — nice to have
+## P2 — not before judging ends
 
-- [ ] Export the owner brief as plain text from the interface.
 - [ ] Filter chips for the timeline (agent / human / system).
 - [ ] A "what would it take" panel that surfaces `civicbid_simulate_company_change` results for a person.
 - [ ] Origin-trial token for Chrome so the flag is not required.
 - [ ] Additional synthetic opportunities and sectors.
+- [ ] Undo of the last agent write.

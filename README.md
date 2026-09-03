@@ -6,7 +6,8 @@ A shared public-infrastructure bid room where a person and a browser agent evalu
 
 - **Live demo:** https://smartjon7.github.io/civicbid-studio/
 - **Repository:** https://github.com/smartjon7/civicbid-studio
-- **Video:** to be added
+- **Video:** to be added on YouTube (script and shot list in [DEMO_SCRIPT.md](DEMO_SCRIPT.md))
+- **Production evidence:** [TEST_RESULTS.md](TEST_RESULTS.md) — 13 tools discovered through `document.modelContext.getTools()` and the full judge sequence executed through `executeTool` in Chrome 152 against this URL; [screenshots](artifacts/screenshots/README.md)
 
 Built for the OpenAI WebMCP Challenge. Every agency, company, opportunity, person, and number is fictional.
 

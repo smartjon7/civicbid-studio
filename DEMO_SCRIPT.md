@@ -1,89 +1,86 @@
 # Demo video script — CivicBid Studio
 
-Target length: 2:45. Hard limit: under 3:00 (challenge rule). Narration is written for about 150 words per minute; read it at a steady pace and let the screen carry the detail.
+Target length: about 2:30. Hard limit: under 3:00 (challenge rule). The narration below is the exact text used in the produced video, so a re-recording with a live voice can follow it word for word.
 
-## Pre-recording checklist
+## Two ways to produce the video
+
+**A. Produced fallback video (already rendered).** `CivicBid-Studio-WebMCP-demo.mp4` was recorded from the live site in Chrome 152 with WebMCP enabled, with every tool call executed through `document.modelContext.executeTool` — the browser's own WebMCP path — and every human step performed as a real click. Narration is a neural text-to-speech voice reading the script below. Nothing on screen is staged or edited: the recording is one continuous take at 1440x810, and the timeline in the video is the real activity log. This video satisfies the rules (under three minutes, audio, shows the build and the WebMCP implementation) and can be uploaded as-is.
+
+**B. Re-recording with ChatGPT (stronger, optional).** If time allows, record the same sequence in the ChatGPT desktop app's built-in browser with GPT-5.6 Sol or Terra so judges see ChatGPT's own Site tools menu and "Recently used" list. Follow the pre-recording checklist, paste the three prompts from [JUDGE_TEST.md](JUDGE_TEST.md), and read the narration below over it. Accelerate only dead air; never cut inside a tool call.
+
+## Pre-recording checklist (for option B)
 
 - [ ] Open the live site in the ChatGPT desktop app's built-in browser (GPT-5.6 Sol or Terra) or Chrome 149+ with WebMCP enabled.
-- [ ] Click **Reset demo** in the header and confirm (or run `civicbid_reset_demo` with the confirmation string) so the workspace is at the seed: no selection, no assignments, no risks, no decision.
+- [ ] Click **Reset demo** in the header and confirm, so the workspace is at the seed: no selection, no assignments, no risks, no decision.
 - [ ] Confirm the header reads **Site tools ready · 13 registered** and the Site tools panel lists all thirteen.
 - [ ] Set browser zoom so the three-column layout is readable at 1080p (110–125% usually works). Check that the pending-decision card and the timeline are visible without scrolling.
 - [ ] Close every other tab and window. Hide bookmarks and extensions. No personal names, accounts, or notifications on screen.
 - [ ] Have the three prompts in a plain-text file ready to paste.
 - [ ] Do one full dry run without recording. Note where the agent pauses so the narration can breathe there.
-- [ ] Recording at 1920x1080, 30 fps, system audio off, microphone on.
+- [ ] Record at 1920x1080, 30 fps, system audio off, microphone on.
 
 ## Recording rules
 
 - No third-party logos, trademarks, or music. Screen, cursor, and voice only.
 - Do not cut inside a tool call. If the agent stalls, stop, reset, and record again.
 - Never show a tool approving anything, because none can. Show the Approve button being clicked by hand.
-- Keep every claim demonstrable on screen. If the score lands at 85 instead of 88, say the number you see.
+- Keep every claim demonstrable on screen. If the score lands at 87 instead of 88, say the number you see.
 - If the browser shows the fallback banner, stop. The video must show real site tools, not the Tool Console.
 
-## Segments
+## Narration and shots
 
 ### 0:00–0:15 — The problem
 
-**Narration:** "Deciding whether to bid a public-infrastructure job is a shared job. An agent is good at reading the solicitation and finding the requirement that disqualifies you. A person has to make the call. CivicBid Studio is a bid room where both work on the same page."
+**Narration:** "Public contractors lose winnable work when one mandatory requirement, bonding gap, staffing constraint, or deadline slips through. CivicBid Studio gives a person and an AI agent one shared, auditable bid room."
 
-**Shot:** The welcome screen. Three opportunity cards in the left rail. Cursor rests on the header badge.
+**Shot:** The welcome screen. Three opportunity cards in the left rail, the header badge "Site tools ready · 13 registered", the demo date. At about 0:06 the Site tools panel opens.
 
-### 0:15–0:35 — The page declares its tools
+### 0:15–0:32 — The page declares its tools
 
-**Narration:** "The page registers thirteen site tools through WebMCP. The count in the header is read back from the browser's own registry. Read tools are marked read-only. And notice what is missing: there is no tool that approves, rejects, or edits the company profile. Those are buttons only a person can click."
+**Narration:** "Instead of forcing an agent to guess through screenshots and clicks, this page registers thirteen structured site tools with WebMCP. The agent reads and changes the same workspace I see, and the browser can list every tool it discovered."
 
-**Shot:** Open the Site tools panel. Slow scroll down the list showing read/write badges. Hover Approve area on the right rail (empty pending card).
+**Shot:** The Site tools panel: thirteen tools with read/write badges, each marked as discovered by the browser. The panel closes at the end of the segment.
 
-### 0:35–1:15 — Prompt 1: the agent does the compliance work
+### 0:32–1:12 — Prompt 1: the agent does the compliance work
 
-**Narration:** "First prompt: find opportunities over twenty million closing within forty-five days, compare them, open the strongest, find every disqualification risk, assign owners, and stage a recommendation — but do not approve."
+**Narration:** "Watch the site tools run the first request: find opportunities over twenty million dollars closing within forty-five days, compare them, and open the strongest. Rail Fastener Renewal leads at seventy-eight, Conditional GO. The agent lists the mandatory requirements, focuses the disqualification risks in the interface, assigns bonding, the joint-venture package, safety, and scheduling to named owners, registers two risks with mitigations, and stages a Conditional GO recommendation. Every call lands in the activity timeline with a state version. And then it stops. The decision is pending human approval."
 
-Paste prompt 1, then stay quiet for the first tool calls.
+**Shot:** Tool calls land in order: list, compare (comparison panel: Rail 78 first, Station 53 NO-GO), open Rail, context, requirements, focus (five rows outlined with the reason), four assignments, two risks, stage. The pending-decision card shows Conditional GO with Approve and Reject marked "Human action required". The timeline fills with agent badges, tool chips, and version stamps.
 
-**Narration (as calls land):** "Two opportunities qualify. Station Accessibility is a no-go: the company has zero accessibility-station projects, and that cannot be created before bid day. Rail Fastener Renewal scores seventy-eight, Conditional GO — bonding is five million short. The agent focuses those requirements, assigns Finance and Bonding, JV and Legal, the Safety Director, and the Scheduler, registers the risks, and stages a Conditional GO. Every call is on the timeline with a version stamp."
+### 1:12–1:38 — The human changes one fact; the agent rereads and revises
 
-**Shot:** Comparison panel appears; workspace opens on Rail; focused rows highlight in the requirement matrix; assignments and risks fill in; the pending-decision card shows Conditional GO with Approve and Reject buttons. The timeline scrolls with agent badges and tool chips.
+**Narration:** "The agent cannot approve this. It also cannot change our company's capacity. That is mine. I confirm the joint-venture package: partner confirmed, combined bonding sixty million. The agent rereads the workspace since the last version it saw, reports exactly what changed, and revises the recommendation to GO. Still pending. Then I approve it myself."
 
-### 1:15–1:35 — The human changes one fact
+**Shot:** Click **Confirm JV package** in the left rail. The profile updates, the score moves to the high eighties, the pending card shows "Company profile changed since this was staged", and the timeline shows the human event with the score movement. The agent calls `civicbid_get_workspace_state` with `sinceStateVersion`, then stages GO ("revised from Conditional GO"). Click **Approve**, confirm in the dialog. The card reads "Approved by you".
 
-**Narration:** "Now the person does the one thing only they can do. They confirm a joint-venture partner with sixty million in combined bonding. The pending card immediately flags that the profile changed since the recommendation was staged."
+### 1:38–1:58 — Prompt 3: the owner brief
 
-**Shot:** Click **Confirm JV package** in the left rail. The profile updates. The pending card shows "Company profile changed since this was staged." The timeline shows a human event with the score movement.
+**Narration:** "Only now can the agent generate the executive owner brief: the approved decision, why this opportunity, conditions, the top disqualification risks, owners and dates, the human change that moved the score, and the next twenty-four hours. Beneath it, the complete agent and human audit trail."
 
-### 1:35–2:05 — Prompt 2: the agent rereads and revises
+**Shot:** `civicbid_generate_owner_brief` runs and the brief panel opens with every section visible, including "Human change incorporated" and "Audit summary".
 
-**Narration:** "Second prompt: read the updated state and tell me exactly what changed. The agent passes the last version it saw and gets back the one human event with before-and-after scores. Rail is now a GO. The agent re-stages, and the log records it as a revision of the Conditional GO. Still nothing approved."
+### 1:58–2:18 — Why it matters
 
-**Shot:** Paste prompt 2. Show the `civicbid_get_workspace_state` call on the timeline, then the new pending card reading GO with "revised from Conditional GO".
+**Narration:** "This is the agent-native web working the way it should. The human interface stays primary, the agent gets precise tools, and the two collaborate in shared context with human judgment at the gate. The same pattern fits procurement, grants, housing, compliance, and every deadline-driven decision."
 
-### 2:05–2:20 — Approval is a click, not a call
+**Shot:** Back to the workspace with the approved card and the full timeline.
 
-**Narration:** "Approval is a click. The reducer accepts it only from a person in the interface — an agent that tries gets a human-only error."
+### 2:18–2:29 — Close
 
-**Shot:** Click **Approve**, then confirm in the dialog. The card reads "Approved by you". Timeline shows a human badge.
+**Narration:** "CivicBid Studio. Open source, MIT licensed, entirely synthetic data. Built for the OpenAI WebMCP Challenge."
 
-### 2:20–2:40 — Prompt 3: the owner brief
-
-**Narration:** "Third prompt: an executive brief. This tool fails until a human approves. Now it produces the decision, the conditions, the owners and dates, the top risks, the human change that moved the score, the next twenty-four hours, and an audit summary built from the same timeline you have been watching."
-
-**Shot:** Paste prompt 3. The brief panel opens. Slow scroll through the sections, pausing on "Human change incorporated" and "Audit summary".
-
-### 2:40–2:45 — Close
-
-**Narration:** "Synthetic data, no backend, MIT licensed. Every tool contract is in the repository."
-
-**Shot:** Return to the header badge. Fade.
+**Shot:** The Site tools panel and the footer with the source link.
 
 ## Shot list summary
 
 | Time | Shot | What must be visible |
 |---|---|---|
-| 0:00 | Welcome | Three cards, header badge |
-| 0:15 | Site tools panel | Thirteen tools with read/write badges |
-| 0:35 | Prompt 1 running | Comparison, workspace, focused rows, assignments, risks, pending card |
-| 1:15 | Confirm JV package | Profile change, stale warning, human timeline event |
-| 1:35 | Prompt 2 running | Workspace-state call, revised GO |
-| 2:05 | Approve click | Approved card, human badge |
-| 2:20 | Prompt 3 running | Owner brief sections |
-| 2:40 | Close | Header badge |
+| 0:00 | Welcome | Three cards, header badge, demo date |
+| 0:06 | Site tools panel | Thirteen tools with read/write badges |
+| 0:32 | Prompt 1 running | Comparison, workspace, focused rows, assignments, risks, pending card |
+| 1:12 | Confirm JV package | Profile change, stale warning, human timeline event |
+| 1:22 | Reread and revise | Workspace-state call, revised GO |
+| 1:32 | Approve click | Approved card, human badge |
+| 1:38 | Prompt 3 running | Owner brief sections |
+| 1:58 | Why it matters | Workspace and timeline |
+| 2:18 | Close | Site tools panel, footer |
