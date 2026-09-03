@@ -85,6 +85,38 @@ export function countWords(text: string): number {
     .filter((word) => word.length > 0).length;
 }
 
+/** Plain-English labels for company profile fields, shared by the activity log and the owner brief. */
+export const COMPANY_FIELD_LABELS: Record<string, string> = {
+  name: 'Company name',
+  dbeCertified: 'DBE certified',
+  railYears: 'Years of rail experience',
+  comparableRailProjects: 'Comparable rail projects',
+  singleProjectBondingUsd: 'Single-project bonding',
+  aggregateBondingUsd: 'Aggregate bonding',
+  jvPartnerConfirmed: 'Qualified JV partner confirmed',
+  jvCombinedBondingUsd: 'Combined JV bonding',
+  availableProjectManagers: 'Available project managers',
+  safetyRecord: 'Safety record',
+  backlogUtilizationPct: 'Backlog utilization',
+  accessibilityStationProjects: 'Accessibility-station projects',
+  completedHousingDevelopments: 'Completed housing developments',
+};
+
+export function fieldLabel(field: string): string {
+  return COMPANY_FIELD_LABELS[field] ?? field;
+}
+
+/** Human-readable value for a profile field: money in $M, booleans as Yes/No, percentages with a sign. */
+export function formatFieldValue(field: string, value: string | number | boolean): string {
+  if (typeof value === 'boolean') return value ? 'Yes' : 'No';
+  if (typeof value === 'number') {
+    if (field.endsWith('Usd')) return formatUsd(value);
+    if (field.endsWith('Pct')) return `${value}%`;
+    return String(value);
+  }
+  return value;
+}
+
 export function titleCase(value: string): string {
   return value.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 }

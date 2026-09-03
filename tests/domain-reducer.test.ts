@@ -421,7 +421,7 @@ describe('company profile is human-only', () => {
     const decision = preset.state.stagedDecision!;
     expect(decision.status).toBe('pending');
     expect(decision.stale).toBe(true);
-    expect(decision.staleReason).toContain('jvPartnerConfirmed');
+    expect(decision.staleReason).toContain('Qualified JV partner confirmed');
     expect(decision.staleReason).toContain('Conditional GO → GO');
     expect(decision.staleReason).toContain('Reevaluate and re-stage before approval');
 

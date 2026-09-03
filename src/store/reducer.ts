@@ -33,7 +33,7 @@ import {
   summarizeEvaluation,
 } from '../domain/evaluateOpportunity';
 import { buildOwnerBrief } from '../domain/ownerBrief';
-import { actorLabel, daysBetween, formatLongDate, formatShortDate, formatUsd, parseIsoDate, recommendationLabel } from '../domain/format';
+import { actorLabel, daysBetween, fieldLabel, formatFieldValue, formatLongDate, formatShortDate, formatUsd, parseIsoDate, recommendationLabel } from '../domain/format';
 
 export interface ReducerContext {
   now(): string;
@@ -221,7 +221,7 @@ function stalenessFor(decision: StagedDecision, nextState: AppState, changedFiel
     : 'Reevaluate and re-stage before approval.';
   return {
     stale: true,
-    staleReason: `Company profile changed after this was staged (${changedFields.join(', ')}): score ${decision.evaluationSnapshot.totalScore} → ${summary.totalScore}, ${recommendationLabel(decision.evaluationSnapshot.recommendation)} → ${recommendationLabel(summary.recommendation)}. ${suffix}`,
+    staleReason: `Company profile changed after this was staged (${changedFields.map(fieldLabel).join(', ')}): score ${decision.evaluationSnapshot.totalScore} → ${summary.totalScore}, ${recommendationLabel(decision.evaluationSnapshot.recommendation)} → ${recommendationLabel(summary.recommendation)}. ${suffix}`,
   };
 }
 
@@ -636,7 +636,7 @@ export function applyCommand(state: AppState, command: Command, ctx: ReducerCont
         {
           action: command.type,
           title: `Human ${command.type === 'apply_jv_preset' ? 'confirmed the JV package' : label}`,
-          detail: `${profileChanges.map((c) => `${c.field}: ${formatValue(c.before)} → ${formatValue(c.after)}`).join('; ')}. ${summary ? `Evaluation moved — ${summary}.` : 'No evaluation changed.'}`,
+          detail: `${profileChanges.map((c) => `${fieldLabel(c.field)}: ${formatFieldValue(c.field, c.before)} → ${formatFieldValue(c.field, c.after)}`).join('; ')}. ${summary ? `Evaluation moved — ${summary}.` : 'No evaluation changed.'}`,
           changed: [...changedFields.map((f) => `company.${f}`), ...(stagedDecision?.stale && !state.stagedDecision?.stale ? ['stagedDecision.stale'] : [])],
           opportunityId: focusId ?? null,
           profileChanges,
@@ -737,8 +737,3 @@ export function applyCommand(state: AppState, command: Command, ctx: ReducerCont
   }
 }
 
-function formatValue(value: string | number | boolean): string {
-  if (typeof value === 'number') return value >= 1_000_000 ? formatUsd(value) : String(value);
-  if (typeof value === 'boolean') return value ? 'Yes' : 'No';
-  return value;
-}

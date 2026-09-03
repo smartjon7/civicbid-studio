@@ -145,7 +145,7 @@ describe('buildOwnerBrief', () => {
     expect(body('Top disqualification risks').indexOf('CRITICAL')).toBeLessThan(body('Top disqualification risks').indexOf('HIGH'));
 
     expect(body('Owners and dates')).toContain('RAIL-01');
-    expect(body('Owners and dates')).toContain('Finance & Bonding, due Saturday, September 12, 2026');
+    expect(body('Owners and dates')).toContain('Finance & Bonding, due Sep 12, 2026');
 
     expect(body('Next 24 hours')).toContain('Finance & Bonding: start');
     expect(body('Audit summary')).toContain('through site tools');
@@ -157,8 +157,8 @@ describe('buildOwnerBrief', () => {
     const brief = buildOwnerBrief(state, options(400), meta);
     const body = brief.sections.find((s) => s.heading === 'Human change incorporated')!.body;
     expect(body).toContain('Human confirmed the JV package');
-    expect(body).toContain('jvPartnerConfirmed false → true');
-    expect(body).toContain('jvCombinedBondingUsd 25000000 → 60000000');
+    expect(body).toContain('Qualified JV partner confirmed No → Yes');
+    expect(body).toContain('Combined JV bonding $25M → $60M');
     expect(body).toContain('Score moved');
     expect(body).toContain('(Conditional GO → GO)');
   });
@@ -254,15 +254,13 @@ describe('buildOwnerBrief', () => {
     expect(bodyOf(full, 'Next 24 hours')).toBe(bodyOf(untrimmed, 'Next 24 hours'));
   });
 
-  it('moves emphasised sections to the front', () => {
+  it('keeps the canonical section order whatever the emphasis', () => {
     const state = approvedRailState();
-    expect(buildOwnerBrief(state, options(400, ['risks']), meta).sections[0].heading).toBe('Top disqualification risks');
-    expect(buildOwnerBrief(state, options(400, ['deadlines']), meta).sections[0].heading).toBe('Next 24 hours');
-    expect(buildOwnerBrief(state, options(400, ['next_actions']), meta).sections[0].heading).toBe('Next 24 hours');
-    const two = buildOwnerBrief(state, options(400, ['assignments', 'decision']), meta);
-    expect(two.sections.slice(0, 2).map((s) => s.heading).sort()).toEqual(['Approved decision', 'Owners and dates']);
-    expect(two.emphasis).toEqual(['assignments', 'decision']);
-    expect(two.sections.map((s) => s.heading).sort()).toEqual([...HEADINGS].sort());
+    for (const emphasis of [['risks'], ['deadlines'], ['next_actions'], ['assignments', 'decision']] as const) {
+      const brief = buildOwnerBrief(state, options(400, [...emphasis]), meta);
+      expect(brief.sections.map((s) => s.heading)).toEqual(HEADINGS);
+      expect(brief.emphasis).toEqual([...emphasis]);
+    }
   });
 
   it('trims emphasised sections last', () => {
@@ -291,12 +289,12 @@ describe('buildOwnerBrief', () => {
     expect(stale.stagedDecision!.stale).toBe(true);
     const brief = buildOwnerBrief(stale, options(400), meta);
     const decision = brief.sections.find((s) => s.heading === 'Approved decision')!.body;
-    expect(decision).toContain('Note: Company profile changed after this was staged (backlogUtilizationPct)');
+    expect(decision).toContain('Note: Company profile changed after this was staged (Backlog utilization)');
     expect(decision).toContain('The approved decision stands as recorded');
     // Both human changes are listed, newest last.
     const human_ = brief.sections.find((s) => s.heading === 'Human change incorporated')!.body;
     expect(human_).toContain('Human confirmed the JV package');
-    expect(human_).toContain('Human released backlog: backlogUtilizationPct 82 → 70');
+    expect(human_).toContain('Human released backlog: Backlog utilization 82% → 70%');
   });
 
   it('is generated through the reducer with the same content', () => {
@@ -305,7 +303,7 @@ describe('buildOwnerBrief', () => {
     const result = applyCommand(state, { type: 'generate_owner_brief', options: options(260, ['deadlines']), ...agent }, ctx);
     if (!result.ok) throw new Error(result.error.message);
     const brief = result.state.ownerBrief!;
-    expect(brief.sections[0].heading).toBe('Next 24 hours');
+    expect(brief.sections[0].heading).toBe('Approved decision');
     expect(brief.wordCount).toBeLessThanOrEqual(260);
     expect(brief.generatedBy).toBe('agent');
     expect(brief.stateVersion).toBe(state.stateVersion);

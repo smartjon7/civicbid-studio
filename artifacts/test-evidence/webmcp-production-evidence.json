@@ -1,0 +1,540 @@
+{
+  "url": "https://smartjon7.github.io/civicbid-studio/",
+  "startedAt": "2026-09-03T05:18:54.219Z",
+  "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+  "discovered": [
+    {
+      "name": "civicbid_assign_requirement",
+      "description": "Assigns one requirement of the open opportunity to an owner role with a due date and optional note; calling it again with the same values is a harmless no-op, and different values update the assignment. Use it to put every mitigable gap and open deliverable in someone's hands. Do not use it for requirements that cannot be met before bid day. Side effect: the assignment is recorded and the compliance score can rise. This tool changes the workspace and is logged; it never approves or rejects anything, because approval belongs to the human alone.",
+      "annotations": {
+        "readOnlyHint": false,
+        "untrustedContentHint": false
+      },
+      "inputSchema": "{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"requirementId\",\"ownerRole\",\"dueDate\"],\"properties\":{\"requirementId\":{\"type\":\"string\",\"pattern\":\"^[A-Z]{2,5}-[0-9]{2}$\",\"minLength\":5,\"maxLength\":8,\"description\":\"Requirement id such as RAIL-01, taken from civicbid_list_requirements.\"},\"ownerRole\":{\"type\":\"string\",\"enum\":[\"Executive Sponsor\",\"Proposal Manager\",\"Estimating Lead\",\"Finance & Bonding\",\"Operations Lead\",\"Safety Director\",\"Compliance Lead\",\"JV & Legal\",\"Scheduler\",\"Quality Manager\"],\"description\":\"Role on the bid team that owns the work.\"},\"dueDate\":{\"type\":\"string\",\"pattern\":\"^[0-9]{4}-[0-9]{2}-[0-9]{2}$\",\"minLength\":10,\"maxLength\":10,\"description\":\"Calendar date in YYYY-MM-DD form.\"},\"note\":{\"type\":\"string\",\"maxLength\":300,\"default\":\"\",\"description\":\"Optional instruction for the owner.\"}}}"
+    },
+    {
+      "name": "civicbid_compare_opportunities",
+      "description": "Ranks two or three opportunities side by side with dimension scores, passed gates, gaps, and up to four plain-English reasons the strongest one wins. Use it when the human asks which opportunity to pursue. Do not use it on a single opportunity. It does not change any business data, but it switches the visible panel to the comparison so the human sees the same ranking.",
+      "annotations": {
+        "readOnlyHint": true,
+        "untrustedContentHint": false
+      },
+      "inputSchema": "{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"opportunityIds\"],\"properties\":{\"opportunityIds\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"enum\":[\"opp-rail-fastener-renewal\",\"opp-station-accessibility\",\"opp-senior-housing-preservation\"],\"description\":\"Opportunity id exactly as returned by civicbid_list_opportunities.\"},\"minItems\":2,\"maxItems\":3,\"uniqueItems\":true,\"description\":\"Two or three opportunity ids to rank side by side.\"}}}"
+    },
+    {
+      "name": "civicbid_focus_requirements",
+      "description": "Highlights up to ten requirements of the open opportunity in the human's view, with a one-sentence reason, so the person sees exactly what the agent wants reviewed. Use it after identifying disqualification risks. Do not use it to assign work; civicbid_assign_requirement does that. Side effect: the highlighted set and reason change in the workspace. This tool changes the workspace and is logged; it never approves or rejects anything, because approval belongs to the human alone.",
+      "annotations": {
+        "readOnlyHint": false,
+        "untrustedContentHint": false
+      },
+      "inputSchema": "{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"requirementIds\",\"mode\",\"reason\"],\"properties\":{\"requirementIds\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"pattern\":\"^[A-Z]{2,5}-[0-9]{2}$\",\"minLength\":5,\"maxLength\":8,\"description\":\"Requirement id such as RAIL-01, taken from civicbid_list_requirements.\"},\"minItems\":1,\"maxItems\":10,\"uniqueItems\":true,\"description\":\"Requirement ids from the open opportunity to highlight for the human.\"},\"mode\":{\"type\":\"string\",\"enum\":[\"replace\",\"add\"],\"description\":\"replace sets the focus list; add extends it.\"},\"reason\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":240,\"description\":\"One sentence telling the human why these requirements deserve attention.\"}}}"
+    },
+    {
+      "name": "civicbid_generate_owner_brief",
+      "description": "Generates the executive owner brief from the approved decision, its evaluation, assignments, risks, human changes, and the audit log, within a word budget. Use it only after the human has approved the staged decision; before that it fails with DECISION_NOT_APPROVED and the right move is to stop and ask the human to approve in the workspace. Side effect: the brief is stored and shown. This tool changes the workspace and is logged; it never approves or rejects anything, because approval belongs to the human alone.",
+      "annotations": {
+        "readOnlyHint": false,
+        "untrustedContentHint": false
+      },
+      "inputSchema": "{\"type\":\"object\",\"additionalProperties\":false,\"properties\":{\"maximumWords\":{\"type\":\"integer\",\"minimum\":150,\"maximum\":400,\"default\":260,\"description\":\"Word budget for the brief.\"},\"emphasis\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"enum\":[\"decision\",\"conditions\",\"risks\",\"assignments\",\"deadlines\",\"next_actions\"]},\"maxItems\":6,\"uniqueItems\":true,\"description\":\"Sections to place first and protect from trimming.\",\"default\":[]},\"title\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":100,\"description\":\"Optional title for the brief.\"}}}"
+    },
+    {
+      "name": "civicbid_get_context",
+      "description": "Returns everything about the open opportunity in one call: company profile, evaluation with dimensions and gates, every requirement with status and finding, assignments, risks, the staged decision, approval status, owner-brief status, and recent human profile changes. Use it after opening an opportunity and before planning work. Do not use it to detect what changed since an earlier call; civicbid_get_workspace_state with sinceStateVersion does that. Read-only.",
+      "annotations": {
+        "readOnlyHint": true,
+        "untrustedContentHint": false
+      },
+      "inputSchema": "{\"type\":\"object\",\"additionalProperties\":false,\"properties\":{}}"
+    },
+    {
+      "name": "civicbid_get_workspace_state",
+      "description": "Returns the current state version, the open opportunity and its evaluation, assignments, risks, the staged decision, approval status, and, when sinceStateVersion is given, every human and system change made after that version with before-and-after scores plus a one-sentence summary. Use it to reread the workspace after the human may have edited something, and before restaging a decision. Do not use it for the full requirement list; civicbid_get_context has that. Read-only.",
+      "annotations": {
+        "readOnlyHint": true,
+        "untrustedContentHint": false
+      },
+      "inputSchema": "{\"type\":\"object\",\"additionalProperties\":false,\"properties\":{\"detailLevel\":{\"type\":\"string\",\"enum\":[\"summary\",\"full\"],\"default\":\"summary\",\"description\":\"summary returns scores and gaps; full returns the entire evaluation.\"},\"sinceStateVersion\":{\"type\":\"integer\",\"minimum\":0,\"description\":\"Return human and system changes made after this state version.\"}}}"
+    },
+    {
+      "name": "civicbid_list_opportunities",
+      "description": "Lists the public-infrastructure opportunities in the bid room with each one's deterministic score and bid/no-bid recommendation, sorted best first. Use it first, to find and filter opportunities by minimum value, days to the bid deadline, or sector. Do not use it for requirement detail; open an opportunity for that. Read-only: it changes nothing in the workspace.",
+      "annotations": {
+        "readOnlyHint": true,
+        "untrustedContentHint": false
+      },
+      "inputSchema": "{\"type\":\"object\",\"additionalProperties\":false,\"properties\":{\"minimumValueUsd\":{\"type\":\"integer\",\"minimum\":0,\"description\":\"Keep opportunities whose estimated value is at least this many US dollars.\"},\"maximumDaysToDeadline\":{\"type\":\"integer\",\"minimum\":1,\"maximum\":365,\"description\":\"Keep opportunities whose bid deadline is within this many days of the demo date.\"},\"sectors\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"enum\":[\"rail\",\"accessibility\",\"housing\"]},\"maxItems\":3,\"uniqueItems\":true,\"description\":\"Keep only these sectors.\"},\"includeClosed\":{\"type\":\"boolean\",\"default\":false,\"description\":\"Include opportunities whose deadline has already passed.\"}}}"
+    },
+    {
+      "name": "civicbid_list_requirements",
+      "description": "Lists the requirements of the open opportunity with status, gate effect, severity, finding, evidence, suggested mitigation, suggested owner, and any assignment. Use it to find disqualification risks and unassigned work; filter by mandatory, status, or category. Do not call it before an opportunity is open. Read-only.",
+      "annotations": {
+        "readOnlyHint": true,
+        "untrustedContentHint": false
+      },
+      "inputSchema": "{\"type\":\"object\",\"additionalProperties\":false,\"properties\":{\"mandatoryOnly\":{\"type\":\"boolean\",\"default\":false,\"description\":\"Return only mandatory requirements.\"},\"statuses\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"enum\":[\"satisfied\",\"gap\",\"at_risk\",\"assigned\",\"complete\"]},\"maxItems\":5,\"uniqueItems\":true,\"description\":\"Keep only requirements in these statuses.\"},\"categories\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"enum\":[\"eligibility\",\"bonding\",\"experience\",\"staffing\",\"safety\",\"participation\",\"schedule\",\"quality\",\"legal\",\"submission\"]},\"maxItems\":10,\"uniqueItems\":true,\"description\":\"Keep only requirements in these categories.\"}}}"
+    },
+    {
+      "name": "civicbid_open_opportunity",
+      "description": "Opens one opportunity in the shared workspace so both the human and the agent work on the same bid, and returns its evaluation and requirement counts. Use it before listing requirements, focusing, assigning, registering risks, or staging a decision. Do not use it just to read scores; civicbid_list_opportunities already returns them. Side effect: the workspace switches to this opportunity and any requirement focus from another opportunity is cleared. This tool changes the workspace and is logged; it never approves or rejects anything, because approval belongs to the human alone.",
+      "annotations": {
+        "readOnlyHint": false,
+        "untrustedContentHint": false
+      },
+      "inputSchema": "{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"opportunityId\"],\"properties\":{\"opportunityId\":{\"type\":\"string\",\"enum\":[\"opp-rail-fastener-renewal\",\"opp-station-accessibility\",\"opp-senior-housing-preservation\"],\"description\":\"Opportunity id exactly as returned by civicbid_list_opportunities.\"}}}"
+    },
+    {
+      "name": "civicbid_reset_demo",
+      "description": "Restores the demonstration to its seed state: the company profile, assignments, risks, decisions, approval, brief, and activity log are all cleared. Use it only when the human asks to start over, and pass the confirmation string exactly. Do not use it to undo a single step. Side effect: all workspace data is replaced. This tool changes the workspace and is logged; it never approves or rejects anything, because approval belongs to the human alone.",
+      "annotations": {
+        "readOnlyHint": false,
+        "untrustedContentHint": false
+      },
+      "inputSchema": "{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"confirm\"],\"properties\":{\"confirm\":{\"type\":\"string\",\"enum\":[\"RESET_CIVICBID_DEMO\"],\"description\":\"Must be exactly RESET_CIVICBID_DEMO.\"}}}"
+    },
+    {
+      "name": "civicbid_simulate_company_change",
+      "description": "Previews how the evaluation of every opportunity (or one opportunity) would move if the company profile changed, for example if a JV partner were confirmed with more bonding, without writing anything. Use it to recommend a profile change to the human, who is the only one who can make it in the workspace. Do not use it to change the profile; no tool can. Read-only.",
+      "annotations": {
+        "readOnlyHint": true,
+        "untrustedContentHint": false
+      },
+      "inputSchema": "{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"changes\"],\"properties\":{\"changes\":{\"type\":\"object\",\"additionalProperties\":false,\"description\":\"Company profile fields to try. Nothing is written.\",\"properties\":{\"jvPartnerConfirmed\":{\"type\":\"boolean\",\"description\":\"Whether a joint-venture partner is confirmed.\"},\"jvCombinedBondingUsd\":{\"type\":\"integer\",\"minimum\":0,\"description\":\"Combined JV bonding capacity in US dollars.\"},\"singleProjectBondingUsd\":{\"type\":\"integer\",\"minimum\":0,\"description\":\"Single-project bonding capacity in US dollars.\"},\"aggregateBondingUsd\":{\"type\":\"integer\",\"minimum\":0,\"description\":\"Aggregate bonding capacity in US dollars.\"},\"availableProjectManagers\":{\"type\":\"integer\",\"minimum\":0,\"description\":\"Project managers available to be named.\"},\"backlogUtilizationPct\":{\"type\":\"integer\",\"minimum\":0,\"maximum\":100,\"description\":\"Backlog utilization percent.\"},\"railYears\":{\"type\":\"integer\",\"minimum\":0,\"description\":\"Years of rail-construction experience.\"},\"comparableRailProjects\":{\"type\":\"integer\",\"minimum\":0,\"description\":\"Comparable rail projects completed.\"},\"accessibilityStationProjects\":{\"type\":\"integer\",\"minimum\":0,\"description\":\"Completed accessibility-station projects.\"},\"completedHousingDevelopments\":{\"type\":\"integer\",\"minimum\":0,\"description\":\"Completed affordable-housing developments.\"},\"safetyRecord\":{\"type\":\"string\",\"enum\":[\"strong\",\"acceptable\",\"poor\"],\"description\":\"Safety record rating.\"},\"dbeCertified\":{\"type\":\"boolean\",\"description\":\"Whether the company holds DBE certification.\"}}},\"opportunityId\":{\"type\":\"string\",\"enum\":[\"opp-rail-fastener-renewal\",\"opp-station-accessibility\",\"opp-senior-housing-preservation\"],\"description\":\"Limit the result to one opportunity.\"}}}"
+    },
+    {
+      "name": "civicbid_stage_decision",
+      "description": "Stages a bid/no-bid recommendation (go, conditional_go, or no_go) for the open opportunity with rationale, conditions, assumptions, and confidence, and hands it to the human as a pending decision. Use it once the gaps are assigned and the risks registered; staging again replaces the pending recommendation and records which one it supersedes. Do not stage go or conditional_go while an unmitigable gap remains. Side effect: the pending decision changes and any earlier approval no longer applies. This tool changes the workspace and is logged; it never approves or rejects anything, because approval belongs to the human alone.",
+      "annotations": {
+        "readOnlyHint": false,
+        "untrustedContentHint": false
+      },
+      "inputSchema": "{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"recommendation\",\"rationale\",\"confidence\"],\"properties\":{\"recommendation\":{\"type\":\"string\",\"enum\":[\"go\",\"conditional_go\",\"no_go\"],\"description\":\"go, conditional_go, or no_go.\"},\"rationale\":{\"type\":\"string\",\"minLength\":40,\"maxLength\":1200,\"description\":\"Plain-English reasoning behind the recommendation.\"},\"conditions\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":240,\"description\":\"A condition the bid depends on.\"},\"maxItems\":8,\"uniqueItems\":true,\"description\":\"Conditions that must hold for the recommendation to stand.\",\"default\":[]},\"assumptions\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":240,\"description\":\"An assumption behind the recommendation.\"},\"maxItems\":8,\"uniqueItems\":true,\"description\":\"Assumptions the recommendation rests on.\",\"default\":[]},\"confidence\":{\"type\":\"integer\",\"minimum\":0,\"maximum\":100,\"description\":\"Confidence in the recommendation, 0 to 100.\"}}}"
+    },
+    {
+      "name": "civicbid_upsert_risk",
+      "description": "Adds a risk to the open opportunity's register, or updates the risk that already carries the same riskKey, with severity, related requirements, rationale, mitigation, owner, and status. Use it to record disqualification and delivery risks with a named owner; registering mitigations raises risk readiness. Do not use it for requirement assignments. Side effect: the risk register changes. This tool changes the workspace and is logged; it never approves or rejects anything, because approval belongs to the human alone.",
+      "annotations": {
+        "readOnlyHint": false,
+        "untrustedContentHint": false
+      },
+      "inputSchema": "{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"riskKey\",\"title\",\"severity\",\"ownerRole\"],\"properties\":{\"riskKey\":{\"type\":\"string\",\"pattern\":\"^[a-z0-9][a-z0-9-]{1,48}$\",\"minLength\":2,\"maxLength\":49,\"description\":\"Stable lowercase slug such as bonding-shortfall. Reusing a key updates that risk.\"},\"title\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":100,\"description\":\"Short name of the risk.\"},\"severity\":{\"type\":\"string\",\"enum\":[\"low\",\"medium\",\"high\",\"critical\"],\"description\":\"How badly this could hurt the bid.\"},\"relatedRequirementIds\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"pattern\":\"^[A-Z]{2,5}-[0-9]{2}$\",\"minLength\":5,\"maxLength\":8,\"description\":\"Requirement id such as RAIL-01, taken from civicbid_list_requirements.\"},\"maxItems\":5,\"uniqueItems\":true,\"description\":\"Requirement ids in the open opportunity that this risk threatens.\",\"default\":[]},\"rationale\":{\"type\":\"string\",\"maxLength\":500,\"default\":\"\",\"description\":\"Why the risk exists.\"},\"mitigation\":{\"type\":\"string\",\"maxLength\":500,\"default\":\"\",\"description\":\"What will be done about it.\"},\"ownerRole\":{\"type\":\"string\",\"enum\":[\"Executive Sponsor\",\"Proposal Manager\",\"Estimating Lead\",\"Finance & Bonding\",\"Operations Lead\",\"Safety Director\",\"Compliance Lead\",\"JV & Legal\",\"Scheduler\",\"Quality Manager\"],\"description\":\"Role on the bid team that owns the work.\"},\"status\":{\"type\":\"string\",\"enum\":[\"open\",\"mitigating\",\"resolved\"],\"default\":\"open\",\"description\":\"open, mitigating, or resolved.\"}}}"
+    }
+  ],
+  "calls": [
+    {
+      "tool": "civicbid_list_opportunities",
+      "input": {
+        "minimumValueUsd": 20000000,
+        "maximumDaysToDeadline": 45
+      },
+      "ms": 33,
+      "ok": true,
+      "summary": "2 of 3 opportunities match: Rail Fastener Renewal Program (78, Conditional GO); Station Accessibility Modernization (53, NO-GO).",
+      "stateVersion": 1,
+      "error": null,
+      "dataPreview": "{\"count\":2,\"demoDate\":\"2026-09-03\",\"opportunities\":[{\"id\":\"opp-rail-fastener-renewal\",\"title\":\"Rail Fastener Renewal Program\",\"agency\":\"North River Transit Authority\",\"sector\":\"rail\",\"estimatedValueUsd\":28000000,\"deadline\":\"2026-09-29\",\"daysToDeadline\":26,\"score\":78,\"recommendation\":\"conditional_go\",\"recommendationLabel\":\"Conditional GO\",\"mitigableGapCount\":1,\"unmitigableGapCount\":0,\"summary\":\"Rep"
+    },
+    {
+      "tool": "civicbid_compare_opportunities",
+      "input": {
+        "opportunityIds": [
+          "opp-rail-fastener-renewal",
+          "opp-station-accessibility"
+        ]
+      },
+      "ms": 261,
+      "ok": true,
+      "summary": "Rail Fastener Renewal Program is the strongest at 78 (Conditional GO); Station Accessibility Modernization 53 (NO-GO).",
+      "stateVersion": 2,
+      "error": null,
+      "dataPreview": "{\"strongestOpportunityId\":\"opp-rail-fastener-renewal\",\"ranked\":[{\"opportunityId\":\"opp-rail-fastener-renewal\",\"title\":\"Rail Fastener Renewal Program\",\"score\":78,\"rawScore\":78,\"capped\":false,\"recommendation\":\"conditional_go\",\"recommendationLabel\":\"Conditional GO\",\"dimensions\":[{\"key\":\"compliance\",\"label\":\"Mandatory compliance and eligibility\",\"weight\":0.3,\"score\":61.5},{\"key\":\"experience\",\"label\":\"R"
+    },
+    {
+      "tool": "civicbid_open_opportunity",
+      "input": {
+        "opportunityId": "opp-rail-fastener-renewal"
+      },
+      "ms": 35,
+      "ok": true,
+      "summary": "Opened Rail Fastener Renewal Program: score 78, Conditional GO, 1 mitigable gap, 0 unmitigable gaps.",
+      "stateVersion": 3,
+      "error": null,
+      "dataPreview": "{\"opportunity\":{\"id\":\"opp-rail-fastener-renewal\",\"title\":\"Rail Fastener Renewal Program\",\"agency\":\"North River Transit Authority\",\"solicitationNumber\":\"NRTA-IFB-2026-114\",\"sector\":\"rail\",\"sectorLabel\":\"Rail\",\"location\":\"Harbor County (fictional)\",\"estimatedValueUsd\":28000000,\"deadline\":\"2026-09-29\",\"daysToDeadline\":26,\"strategicFit\":\"high\",\"summary\":\"Replace direct-fixation fasteners and pads on 1"
+    },
+    {
+      "tool": "civicbid_get_context",
+      "input": {},
+      "ms": 179,
+      "ok": true,
+      "summary": "Rail Fastener Renewal Program: score 78 (Conditional GO), 1 mitigable gap, 0 unmitigable gaps, 0 assignments, 0 risks; decision none.",
+      "stateVersion": 3,
+      "error": null,
+      "dataPreview": "{\"stateVersion\":3,\"demoDate\":\"2026-09-03\",\"company\":{\"name\":\"Atlas Civic Infrastructure, LLC\",\"dbeCertified\":true,\"railYears\":8,\"comparableRailProjects\":4,\"singleProjectBondingUsd\":25000000,\"aggregateBondingUsd\":60000000,\"jvPartnerConfirmed\":false,\"jvCombinedBondingUsd\":25000000,\"availableProjectManagers\":2,\"safetyRecord\":\"acceptable\",\"backlogUtilizationPct\":82,\"accessibilityStationProjects\":0,\"co"
+    },
+    {
+      "tool": "civicbid_list_requirements",
+      "input": {
+        "mandatoryOnly": true
+      },
+      "ms": 37,
+      "ok": true,
+      "summary": "10 requirements for Rail Fastener Renewal Program (mandatory only): 2 satisfied, 7 open gaps, 1 at risk, 0 assigned, 0 complete.",
+      "stateVersion": 3,
+      "error": null,
+      "dataPreview": "{\"opportunityId\":\"opp-rail-fastener-renewal\",\"count\":10,\"requirements\":[{\"id\":\"RAIL-01\",\"label\":\"Minimum $30M single-project bonding, or agency-approved combined JV bonding\",\"category\":\"bonding\",\"mandatory\":true,\"status\":\"gap\",\"gateEffect\":\"mitigable_gap\",\"severity\":\"high\",\"finding\":\"Short of the $30M minimum: single-project bonding of $25M (no confirmed JV partner), a $5M shortfall.\",\"suggestedMi"
+    },
+    {
+      "tool": "civicbid_focus_requirements",
+      "input": {
+        "requirementIds": [
+          "RAIL-01",
+          "RAIL-07",
+          "RAIL-04",
+          "RAIL-05",
+          "RAIL-09"
+        ],
+        "mode": "replace",
+        "reason": "Bonding, JV approval, PM availability, safety plan, and schedule are the items that can disqualify this bid."
+      },
+      "ms": 64,
+      "ok": true,
+      "summary": "Highlighted 5 requirements for the human: RAIL-01, RAIL-07, RAIL-04, RAIL-05, RAIL-09.",
+      "stateVersion": 4,
+      "error": null,
+      "dataPreview": "{\"focusedRequirementIds\":[\"RAIL-01\",\"RAIL-07\",\"RAIL-04\",\"RAIL-05\",\"RAIL-09\"],\"reason\":\"Bonding, JV approval, PM availability, safety plan, and schedule are the items that can disqualify this bid.\",\"invalidIds\":[],\"visiblePanel\":\"workspace\"}"
+    },
+    {
+      "tool": "civicbid_assign_requirement",
+      "input": {
+        "requirementId": "RAIL-01",
+        "ownerRole": "Finance & Bonding",
+        "dueDate": "2026-09-12",
+        "note": "Obtain combined JV surety letter of at least $30M."
+      },
+      "ms": 41,
+      "ok": true,
+      "summary": "Assigned RAIL-01 to Finance & Bonding, due 2026-09-12; the requirement is now assigned.",
+      "stateVersion": 5,
+      "error": null,
+      "dataPreview": "{\"assignment\":{\"requirementId\":\"RAIL-01\",\"opportunityId\":\"opp-rail-fastener-renewal\",\"ownerRole\":\"Finance & Bonding\",\"dueDate\":\"2026-09-12\",\"note\":\"Obtain combined JV surety letter of at least $30M.\",\"assignedBy\":\"agent\",\"createdAt\":\"2026-09-03T05:19:01.720Z\",\"updatedAt\":\"2026-09-03T05:19:01.720Z\"},\"changedFields\":[\"ownerRole\",\"dueDate\",\"note\"],\"requirementStatus\":\"assigned\",\"warnings\":[]}"
+    },
+    {
+      "tool": "civicbid_assign_requirement",
+      "input": {
+        "requirementId": "RAIL-01",
+        "ownerRole": "Finance & Bonding",
+        "dueDate": "2026-09-12",
+        "note": "Obtain combined JV surety letter of at least $30M."
+      },
+      "ms": 33,
+      "ok": true,
+      "summary": "Already assigned exactly this way: RAIL-01 to Finance & Bonding, due 2026-09-12.",
+      "stateVersion": 5,
+      "error": null,
+      "dataPreview": "{\"assignment\":{\"requirementId\":\"RAIL-01\",\"opportunityId\":\"opp-rail-fastener-renewal\",\"ownerRole\":\"Finance & Bonding\",\"dueDate\":\"2026-09-12\",\"note\":\"Obtain combined JV surety letter of at least $30M.\",\"assignedBy\":\"agent\",\"createdAt\":\"2026-09-03T05:19:01.720Z\",\"updatedAt\":\"2026-09-03T05:19:01.720Z\"},\"changedFields\":[],\"requirementStatus\":\"assigned\",\"warnings\":[]}"
+    },
+    {
+      "tool": "civicbid_assign_requirement",
+      "input": {
+        "requirementId": "RAIL-07",
+        "ownerRole": "JV & Legal",
+        "dueDate": "2026-09-19",
+        "note": "File the agency JV approval package seven days before bid."
+      },
+      "ms": 54,
+      "ok": true,
+      "summary": "Assigned RAIL-07 to JV & Legal, due 2026-09-19; the requirement is now assigned.",
+      "stateVersion": 6,
+      "error": null,
+      "dataPreview": "{\"assignment\":{\"requirementId\":\"RAIL-07\",\"opportunityId\":\"opp-rail-fastener-renewal\",\"ownerRole\":\"JV & Legal\",\"dueDate\":\"2026-09-19\",\"note\":\"File the agency JV approval package seven days before bid.\",\"assignedBy\":\"agent\",\"createdAt\":\"2026-09-03T05:19:01.799Z\",\"updatedAt\":\"2026-09-03T05:19:01.799Z\"},\"changedFields\":[\"ownerRole\",\"dueDate\",\"note\"],\"requirementStatus\":\"assigned\",\"warnings\":[]}"
+    },
+    {
+      "tool": "civicbid_assign_requirement",
+      "input": {
+        "requirementId": "RAIL-05",
+        "ownerRole": "Safety Director",
+        "dueDate": "2026-09-15",
+        "note": "Draft the live-track safety plan."
+      },
+      "ms": 41,
+      "ok": true,
+      "summary": "Assigned RAIL-05 to Safety Director, due 2026-09-15; the requirement is now assigned.",
+      "stateVersion": 7,
+      "error": null,
+      "dataPreview": "{\"assignment\":{\"requirementId\":\"RAIL-05\",\"opportunityId\":\"opp-rail-fastener-renewal\",\"ownerRole\":\"Safety Director\",\"dueDate\":\"2026-09-15\",\"note\":\"Draft the live-track safety plan.\",\"assignedBy\":\"agent\",\"createdAt\":\"2026-09-03T05:19:01.849Z\",\"updatedAt\":\"2026-09-03T05:19:01.849Z\"},\"changedFields\":[\"ownerRole\",\"dueDate\",\"note\"],\"requirementStatus\":\"assigned\",\"warnings\":[]}"
+    },
+    {
+      "tool": "civicbid_assign_requirement",
+      "input": {
+        "requirementId": "RAIL-04",
+        "ownerRole": "Operations Lead",
+        "dueDate": "2026-09-10",
+        "note": "Name the PM and document release from backlog."
+      },
+      "ms": 33,
+      "ok": true,
+      "summary": "Assigned RAIL-04 to Operations Lead, due 2026-09-10; the requirement is now assigned.",
+      "stateVersion": 8,
+      "error": null,
+      "dataPreview": "{\"assignment\":{\"requirementId\":\"RAIL-04\",\"opportunityId\":\"opp-rail-fastener-renewal\",\"ownerRole\":\"Operations Lead\",\"dueDate\":\"2026-09-10\",\"note\":\"Name the PM and document release from backlog.\",\"assignedBy\":\"agent\",\"createdAt\":\"2026-09-03T05:19:01.893Z\",\"updatedAt\":\"2026-09-03T05:19:01.893Z\"},\"changedFields\":[\"ownerRole\",\"dueDate\",\"note\"],\"requirementStatus\":\"assigned\",\"warnings\":[]}"
+    },
+    {
+      "tool": "civicbid_upsert_risk",
+      "input": {
+        "riskKey": "bonding-shortfall",
+        "title": "Single-project bonding is $5M short of the minimum",
+        "severity": "high",
+        "relatedRequirementIds": [
+          "RAIL-01",
+          "RAIL-07"
+        ],
+        "rationale": "Atlas has $25M single-project capacity against a $30M minimum.",
+        "mitigation": "Confirm a qualified JV partner and secure a combined surety letter.",
+        "ownerRole": "Finance & Bonding",
+        "status": "open"
+      },
+      "ms": 54,
+      "ok": true,
+      "summary": "Added high risk \"Single-project bonding is $5M short of the minimum\" owned by Finance & Bonding (open).",
+      "stateVersion": 9,
+      "error": null,
+      "dataPreview": "{\"risk\":{\"riskKey\":\"bonding-shortfall\",\"opportunityId\":\"opp-rail-fastener-renewal\",\"title\":\"Single-project bonding is $5M short of the minimum\",\"severity\":\"high\",\"relatedRequirementIds\":[\"RAIL-01\",\"RAIL-07\"],\"rationale\":\"Atlas has $25M single-project capacity against a $30M minimum.\",\"mitigation\":\"Confirm a qualified JV partner and secure a combined surety letter.\",\"ownerRole\":\"Finance & Bonding\","
+    },
+    {
+      "tool": "civicbid_upsert_risk",
+      "input": {
+        "riskKey": "pm-availability",
+        "title": "Project manager availability at 82% backlog",
+        "severity": "medium",
+        "relatedRequirementIds": [
+          "RAIL-04"
+        ],
+        "rationale": "Both PMs are committed above the 80% threshold.",
+        "mitigation": "Document release for the named PM or bring a PM from the JV partner.",
+        "ownerRole": "Operations Lead",
+        "status": "mitigating"
+      },
+      "ms": 65,
+      "ok": true,
+      "summary": "Added medium risk \"Project manager availability at 82% backlog\" owned by Operations Lead (mitigating).",
+      "stateVersion": 10,
+      "error": null,
+      "dataPreview": "{\"risk\":{\"riskKey\":\"pm-availability\",\"opportunityId\":\"opp-rail-fastener-renewal\",\"title\":\"Project manager availability at 82% backlog\",\"severity\":\"medium\",\"relatedRequirementIds\":[\"RAIL-04\"],\"rationale\":\"Both PMs are committed above the 80% threshold.\",\"mitigation\":\"Document release for the named PM or bring a PM from the JV partner.\",\"ownerRole\":\"Operations Lead\",\"status\":\"mitigating\",\"createdBy\""
+    },
+    {
+      "tool": "civicbid_stage_decision",
+      "input": {
+        "recommendation": "conditional_go",
+        "rationale": "Rail Fastener Renewal scores highest and every gate is passable, but bonding is $5M short without a confirmed JV partner and the JV approval package has not started. Pursue on condition that the JV package is confirmed.",
+        "conditions": [
+          "Confirm a qualified JV partner with combined bonding of at least $30M",
+          "File the agency JV approval package by September 22"
+        ],
+        "assumptions": [
+          "Backlog can be reduced below 80% for the named project manager"
+        ],
+        "confidence": 68
+      },
+      "ms": 68,
+      "ok": true,
+      "summary": "Staged Conditional GO for Rail Fastener Renewal Program at 68% confidence; human approval is still required.",
+      "stateVersion": 11,
+      "error": null,
+      "dataPreview": "{\"decision\":{\"id\":\"dec-mtl2rrfq-c-g143\",\"recommendation\":\"conditional_go\",\"recommendationLabel\":\"Conditional GO\",\"rationale\":\"Rail Fastener Renewal scores highest and every gate is passable, but bonding is $5M short without a confirmed JV partner and the JV approval package has not started. Pursue on condition that the JV package is confirmed.\",\"conditions\":[\"Confirm a qualified JV partner with co"
+    },
+    {
+      "tool": "civicbid_generate_owner_brief",
+      "input": {
+        "maximumWords": 260,
+        "emphasis": [
+          "decision",
+          "next_actions"
+        ]
+      },
+      "ms": 43,
+      "ok": false,
+      "summary": "Human approval is still required. The owner brief can only be generated from an approved decision.",
+      "stateVersion": 11,
+      "error": {
+        "code": "DECISION_NOT_APPROVED",
+        "message": "Human approval is still required. The owner brief can only be generated from an approved decision.",
+        "recovery": "Stop and ask the human to approve the pending decision in the workspace, then call civicbid_generate_owner_brief again."
+      },
+      "dataPreview": "null"
+    },
+    {
+      "tool": "civicbid_get_workspace_state",
+      "input": {
+        "detailLevel": "summary",
+        "sinceStateVersion": 11
+      },
+      "ms": 24,
+      "ok": true,
+      "summary": "State version 12: Rail Fastener Renewal Program open at 87 (GO); decision pending. Since version 11: the human confirmed the JV package; Rail Fastener Renewal Program moved 79 to 87 (Conditional GO to GO).",
+      "stateVersion": 12,
+      "error": null,
+      "dataPreview": "{\"stateVersion\":12,\"demoDate\":\"2026-09-03\",\"detailLevel\":\"summary\",\"company\":{\"name\":\"Atlas Civic Infrastructure, LLC\",\"dbeCertified\":true,\"railYears\":8,\"comparableRailProjects\":4,\"singleProjectBondingUsd\":25000000,\"aggregateBondingUsd\":60000000,\"jvPartnerConfirmed\":true,\"jvCombinedBondingUsd\":60000000,\"availableProjectManagers\":2,\"safetyRecord\":\"acceptable\",\"backlogUtilizationPct\":82,\"accessibili"
+    },
+    {
+      "tool": "civicbid_stage_decision",
+      "input": {
+        "recommendation": "go",
+        "rationale": "With the JV partner confirmed and combined bonding of $60M, the bonding gate passes and no mandatory capability gaps remain. The remaining items are assigned deliverables with owners and dates.",
+        "conditions": [
+          "File the JV approval package by September 22"
+        ],
+        "assumptions": [],
+        "confidence": 84
+      },
+      "ms": 19,
+      "ok": true,
+      "summary": "Staged GO for Rail Fastener Renewal Program at 84% confidence (supersedes dec-mtl2rrfq-c-g143); human approval is still required.",
+      "stateVersion": 13,
+      "error": null,
+      "dataPreview": "{\"decision\":{\"id\":\"dec-mtl2rsb1-h-9ou8\",\"recommendation\":\"go\",\"recommendationLabel\":\"GO\",\"rationale\":\"With the JV partner confirmed and combined bonding of $60M, the bonding gate passes and no mandatory capability gaps remain. The remaining items are assigned deliverables with owners and dates.\",\"conditions\":[\"File the JV approval package by September 22\"],\"assumptions\":[],\"confidence\":84,\"stagedA"
+    },
+    {
+      "tool": "civicbid_generate_owner_brief",
+      "input": {
+        "maximumWords": 260,
+        "emphasis": [
+          "decision",
+          "risks",
+          "assignments",
+          "next_actions"
+        ]
+      },
+      "ms": 70,
+      "ok": true,
+      "summary": "Generated the owner brief \"Owner Brief — Rail Fastener Renewal Program — GO\" (242 words) from approved decision dec-mtl2rsb1-h-9ou8.",
+      "stateVersion": 15,
+      "error": null,
+      "dataPreview": "{\"brief\":{\"id\":\"brief-mtl2s5as-k-0nq3\",\"title\":\"Owner Brief — Rail Fastener Renewal Program — GO\",\"wordCount\":242,\"maximumWords\":260,\"sections\":[{\"heading\":\"Approved decision\",\"body\":\"GO on Rail Fastener Renewal Program (North River Transit Authority, $28M, bids due Tuesday, September 29, 2026, 26 days out).\"},{\"heading\":\"Top disqualification risks\",\"body\":\"At risk: Named project manager with rail"
+    },
+    {
+      "tool": "civicbid_reset_demo",
+      "input": {
+        "confirm": "RESET_CIVICBID_DEMO"
+      },
+      "ms": 44,
+      "ok": true,
+      "summary": "Reset the demonstration: every assignment, risk, decision, and brief was cleared and the seed company profile restored.",
+      "stateVersion": 16,
+      "error": null,
+      "dataPreview": "{\"reset\":true,\"stateVersion\":16,\"selectedOpportunityId\":null,\"visiblePanel\":\"welcome\"}"
+    }
+  ],
+  "human": [
+    {
+      "action": "Confirm JV package",
+      "ms": 551,
+      "stateVersionAfter": 12
+    },
+    {
+      "action": "Approve decision",
+      "ms": 12946,
+      "stateVersionAfter": 14
+    }
+  ],
+  "consoleErrors": [],
+  "pageErrors": [],
+  "checks": [
+    {
+      "name": "runtime registered via document.modelContext",
+      "pass": true,
+      "detail": "{\"supported\":true,\"registered\":true,\"registeredCount\":13,\"discovered\":[{\"name\":\"civicbid_assign_requirement\",\"description\":\"Assigns one requirement of the open opportunity to an owner role with a due date and optional note; calling it again with the same values is a harmless no-op, and different values update the assignment. Use it to put every mitigable gap and open deliverable in someone's hands. Do not use it for requirements that cannot be met before bid day. Side effect: the assignment is recorded and the compliance score can rise. This tool changes the workspace and is logged; it never approves or rejects anything, because approval belongs to the human alone.\",\"readOnly\":false},{\"name\":\"civicbid_compare_opportunities\",\"description\":\"Ranks two or three opportunities side by side with dimension scores, passed gates, gaps, and up to four plain-English reasons the strongest one wins. Use it when the human asks which opportunity to pursue. Do not use it on a single opportunity. It does not change any business data, but it switches the visible panel to the comparison so the human sees the same ranking.\",\"readOnly\":true},{\"name\":\"civicbid_focus_requirements\",\"description\":\"Highlights up to ten requirements of the open opportunity in the human's view, with a one-sentence reason, so the person sees exactly what the agent wants reviewed. Use it after identifying disqualification risks. Do not use it to assign work; civicbid_assign_requirement does that. Side effect: the highlighted set and reason change in the workspace. This tool changes the workspace and is logged; it never approves or rejects anything, because approval belongs to the human alone.\",\"readOnly\":false},{\"name\":\"civicbid_generate_owner_brief\",\"description\":\"Generates the executive owner brief from the approved decision, its evaluation, assignments, risks, human changes, and the audit log, within a word budget. Use it only after the human has approved the staged decision; before that it fails with DECISION_NOT_APPROVED and the right move is to stop and ask the human to approve in the workspace. Side effect: the brief is stored and shown. This tool changes the workspace and is logged; it never approves or rejects anything, because approval belongs to the human alone.\",\"readOnly\":false},{\"name\":\"civicbid_get_context\",\"description\":\"Returns everything about the open opportunity in one call: company profile, evaluation with dimensions and gates, every requirement with status and finding, assignments, risks, the staged decision, approval status, owner-brief status, and recent human profile changes. Use it after opening an opportunity and before planning work. Do not use it to detect what changed since an earlier call; civicbid_get_workspace_state with sinceStateVersion does that. Read-only.\",\"readOnly\":true},{\"name\":\"civicbid_get_workspace_state\",\"description\":\"Returns the current state version, the open opportunity and its evaluation, assignments, risks, the staged decision, approval status, and, when sinceStateVersion is given, every human and system change made after that version with before-and-after scores plus a one-sentence summary. Use it to reread the workspace after the human may have edited something, and before restaging a decision. Do not use it for the full requirement list; civicbid_get_context has that. Read-only.\",\"readOnly\":true},{\"name\":\"civicbid_list_opportunities\",\"description\":\"Lists the public-infrastructure opportunities in the bid room with each one's deterministic score and bid/no-bid recommendation, sorted best first. Use it first, to find and filter opportunities by minimum value, days to the bid deadline, or sector. Do not use it for requirement detail; open an opportunity for that. Read-only: it changes nothing in the workspace.\",\"readOnly\":true},{\"name\":\"civicbid_list_requirements\",\"description\":\"Lists the requirements of the open opportunity with status, gate effect, severity, finding, evidence, suggested mitigation, suggested owner, and any assignment. Use it to find disqualification risks and unassigned work; filter by mandatory, status, or category. Do not call it before an opportunity is open. Read-only.\",\"readOnly\":true},{\"name\":\"civicbid_open_opportunity\",\"description\":\"Opens one opportunity in the shared workspace so both the human and the agent work on the same bid, and returns its evaluation and requirement counts. Use it before listing requirements, focusing, assigning, registering risks, or staging a decision. Do not use it just to read scores; civicbid_list_opportunities already returns them. Side effect: the workspace switches to this opportunity and any requirement focus from another opportunity is cleared. This tool changes the workspace and is logged; it never approves or rejects anything, because approval belongs to the human alone.\",\"readOnly\":false},{\"name\":\"civicbid_reset_demo\",\"description\":\"Restores the demonstration to its seed state: the company profile, assignments, risks, decisions, approval, brief, and activity log are all cleared. Use it only when the human asks to start over, and pass the confirmation string exactly. Do not use it to undo a single step. Side effect: all workspace data is replaced. This tool changes the workspace and is logged; it never approves or rejects anything, because approval belongs to the human alone.\",\"readOnly\":false},{\"name\":\"civicbid_simulate_company_change\",\"description\":\"Previews how the evaluation of every opportunity (or one opportunity) would move if the company profile changed, for example if a JV partner were confirmed with more bonding, without writing anything. Use it to recommend a profile change to the human, who is the only one who can make it in the workspace. Do not use it to change the profile; no tool can. Read-only.\",\"readOnly\":true},{\"name\":\"civicbid_stage_decision\",\"description\":\"Stages a bid/no-bid recommendation (go, conditional_go, or no_go) for the open opportunity with rationale, conditions, assumptions, and confidence, and hands it to the human as a pending decision. Use it once the gaps are assigned and the risks registered; staging again replaces the pending recommendation and records which one it supersedes. Do not stage go or conditional_go while an unmitigable gap remains. Side effect: the pending decision changes and any earlier approval no longer applies. This tool changes the workspace and is logged; it never approves or rejects anything, because approval belongs to the human alone.\",\"readOnly\":false},{\"name\":\"civicbid_upsert_risk\",\"description\":\"Adds a risk to the open opportunity's register, or updates the risk that already carries the same riskKey, with severity, related requirements, rationale, mitigation, owner, and status. Use it to record disqualification and delivery risks with a named owner; registering mitigations raises risk readiness. Do not use it for requirement assignments. Side effect: the risk register changes. This tool changes the workspace and is logged; it never approves or rejects anything, because approval belongs to the human alone.\",\"readOnly\":false}],\"canExecuteViaBrowser\":true,\"error\":null}"
+    },
+    {
+      "name": "getTools() returns 13 civicbid tools",
+      "pass": true,
+      "detail": "civicbid_assign_requirement, civicbid_compare_opportunities, civicbid_focus_requirements, civicbid_generate_owner_brief, civicbid_get_context, civicbid_get_workspace_state, civicbid_list_opportunities, civicbid_list_requirements, civicbid_open_opportunity, civicbid_reset_demo, civicbid_simulate_company_change, civicbid_stage_decision, civicbid_upsert_risk"
+    },
+    {
+      "name": "no approve/reject tool exposed",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "filter returns Rail and Station only",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "comparison picks Rail",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "context reports Conditional GO before JV",
+      "pass": true,
+      "detail": "\"conditional_go\""
+    },
+    {
+      "name": "repeated assignment is idempotent",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "staged decision is pending, not approved",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "owner brief blocked before approval",
+      "pass": true,
+      "detail": "Human approval is still required. The owner brief can only be generated from an approved decision."
+    },
+    {
+      "name": "workspace state reports the human JV change with score delta",
+      "pass": true,
+      "detail": "{\"opportunityId\":\"opp-rail-fastener-renewal\",\"title\":\"Rail Fastener Renewal Program\",\"scoreBefore\":79,\"scoreAfter\":87,\"recommendationBefore\":\"conditional_go\",\"recommendationAfter\":\"go\",\"gapsClosed\":[\"RAIL-01\"],\"gapsOpened\":[]}"
+    },
+    {
+      "name": "revised decision supersedes the first and stays pending",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "approval recorded by human click",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "owner brief generated after approval",
+      "pass": true,
+      "detail": "words=242"
+    },
+    {
+      "name": "state persists across refresh",
+      "pass": true,
+      "detail": "v15 -> v15"
+    },
+    {
+      "name": "tools re-registered after refresh",
+      "pass": true,
+      "detail": "count=13"
+    },
+    {
+      "name": "reset returns to welcome with no selection",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no console errors",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no page errors",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "finishedAt": "2026-09-03T05:19:20.934Z",
+  "summary": {
+    "checks": 18,
+    "passed": 18,
+    "toolCalls": 19
+  }
+}
