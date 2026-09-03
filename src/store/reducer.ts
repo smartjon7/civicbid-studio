@@ -99,6 +99,7 @@ function commit(
     at: ctx.now(),
     actor: provenance.actor,
     channel: provenance.channel,
+    tool: provenance.tool ?? null,
     action: input.action,
     title: input.title,
     detail: input.detail ?? '',
@@ -684,6 +685,31 @@ export function applyCommand(state: AppState, command: Command, ctx: ReducerCont
         },
         ctx,
       );
+    }
+
+    case 'record_tool_call': {
+      // Audit-only: records a read-only or failed tool call without changing business state or the version.
+      if (!isString(command.tool) || !command.tool) return fail(state, 'INVALID_INPUT', 'tool is required.', 'Pass the tool name.');
+      const lastSeq = state.activity.length ? state.activity[state.activity.length - 1].seq : 0;
+      const event: ActivityEvent = {
+        id: ctx.newId('evt'),
+        seq: lastSeq + 1,
+        at: ctx.now(),
+        actor: command.actor,
+        channel: command.channel,
+        tool: command.tool,
+        action: command.ok ? 'tool_call' : 'tool_call_failed',
+        title: `${who(command)} ${command.ok ? 'called' : 'failed calling'} ${command.tool}`,
+        detail: isString(command.summary) ? command.summary.slice(0, 500) : '',
+        changed: [],
+        stateVersionBefore: state.stateVersion,
+        stateVersionAfter: state.stateVersion,
+        opportunityId: state.selectedOpportunityId,
+        profileChanges: [],
+        evaluationDelta: null,
+      };
+      const activity = [...state.activity, event].slice(-MAX_ACTIVITY);
+      return { ok: true, state: { ...state, activity }, event, changed: [], noop: false, warnings: [] };
     }
 
     case 'reset_demo': {

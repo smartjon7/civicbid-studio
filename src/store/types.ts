@@ -68,6 +68,8 @@ export type VisiblePanel = 'welcome' | 'comparison' | 'workspace' | 'brief';
 export interface Provenance {
   actor: Actor;
   channel: Channel;
+  /** Name of the WebMCP tool that produced this write, when one did. */
+  tool?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -341,6 +343,7 @@ export interface ActivityEvent {
   at: string;
   actor: Actor;
   channel: Channel;
+  tool: string | null;
   action: string;
   title: string;
   detail: string;
@@ -430,6 +433,7 @@ export type Command =
   | ({ type: 'apply_jv_preset' } & Provenance)
   | ({ type: 'generate_owner_brief'; options: OwnerBriefOptions } & Provenance)
   | ({ type: 'reset_demo' } & Provenance)
+  | ({ type: 'record_tool_call'; tool: string; ok: boolean; summary: string } & Provenance)
   | ({ type: 'set_ui'; ui: Partial<UiState> } & Provenance);
 
 export type CommandType = Command['type'];
