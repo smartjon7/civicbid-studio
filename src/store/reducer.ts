@@ -33,7 +33,7 @@ import {
   summarizeEvaluation,
 } from '../domain/evaluateOpportunity';
 import { buildOwnerBrief } from '../domain/ownerBrief';
-import { actorLabel, daysBetween, formatUsd, parseIsoDate, recommendationLabel } from '../domain/format';
+import { actorLabel, daysBetween, formatLongDate, formatShortDate, formatUsd, parseIsoDate, recommendationLabel } from '../domain/format';
 
 export interface ReducerContext {
   now(): string;
@@ -251,7 +251,7 @@ export function applyCommand(state: AppState, command: Command, ctx: ReducerCont
         {
           action: 'open_opportunity',
           title: `${who(command)} opened ${opportunity.title}`,
-          detail: `${opportunity.agency} · ${formatUsd(opportunity.estimatedValueUsd)} · due ${opportunity.deadline} · score ${evaluation.totalScore}, ${evaluation.recommendationLabel}.`,
+          detail: `${opportunity.agency} · ${formatUsd(opportunity.estimatedValueUsd)} · due ${formatLongDate(opportunity.deadline)} · score ${evaluation.totalScore}, ${evaluation.recommendationLabel}.`,
           changed: ['selectedOpportunityId', 'ui.visiblePanel', ...(switching ? ['focusedRequirementIds'] : [])],
           opportunityId: opportunity.id,
         },
@@ -382,7 +382,7 @@ export function applyCommand(state: AppState, command: Command, ctx: ReducerCont
         {
           action: 'assign_requirement',
           title: `${who(command)} ${existing ? 'updated the assignment for' : 'assigned'} ${command.requirementId} to ${command.ownerRole}`,
-          detail: `Due ${command.dueDate}${note ? ` — ${note}` : ''}`,
+          detail: `Due ${formatShortDate(command.dueDate)}${note ? ` — ${note}` : ''}`,
           changed,
         },
         ctx,
@@ -535,7 +535,7 @@ export function applyCommand(state: AppState, command: Command, ctx: ReducerCont
           stagedDecision: decision,
           decisionHistory: previous ? [...state.decisionHistory, previous] : state.decisionHistory,
           approval: null,
-          ownerBrief: previous && previous.status === 'approved' ? state.ownerBrief : state.ownerBrief,
+          ownerBrief: null,
           ui: { ...state.ui, visiblePanel: 'workspace' },
         },
         command,
@@ -543,7 +543,7 @@ export function applyCommand(state: AppState, command: Command, ctx: ReducerCont
           action: 'stage_decision',
           title: `${who(command)} staged ${recommendationLabel(input.recommendation)} for ${opportunity.title}${revised}`,
           detail: `Confidence ${input.confidence}%, score ${evaluation.totalScore}. Human approval is still required.`,
-          changed: ['stagedDecision', 'approval', ...(previous ? ['decisionHistory'] : [])],
+          changed: ['stagedDecision', 'approval', ...(previous ? ['decisionHistory'] : []), ...(state.ownerBrief ? ['ownerBrief'] : [])],
           opportunityId: selected.opportunityId,
         },
         ctx,

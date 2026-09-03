@@ -1,0 +1,22 @@
+# Decisions — CivicBid Studio
+
+One line each: the decision and why. Dated September 3, 2026 unless noted.
+
+1. **All ten DELTA items adopted** (browser-read tool registry, Tool Console, simulate tool, `sinceStateVersion`, pending-decision staleness, data-driven requirement rules, frozen demo date, judge-sequence test, GitHub Pages, version-stamped narrated log) — each improves a judging category and none changes the handover's concept.
+2. **GitHub Pages through GitHub Actions is the deployment** — it is the only pre-authenticated provider available here, serves HTTPS with no login, and can be verified without a credential from the owner.
+3. **`civicbid_compare_opportunities` is annotated read-only** — it returns business data without changing it; switching the comparison panel is presentation, and the brief calls for it to be read.
+4. **Only `readOnlyHint` is used in annotations** — `readOnlyHint` and `untrustedContentHint` are the only documented annotations; `destructiveHint` is not, so reset relies on a confirmation string instead.
+5. **The demo date is anchored at September 3, 2026** — days to deadline must return the same two opportunities for the judge prompt through the September 21 judging window regardless of the real clock.
+6. **Gate and cap semantics** — any unmitigable mandatory failure is NO-GO; any mitigable mandatory capability gap is Conditional GO capped at 79; otherwise 80+ GO, 65–79 Conditional GO, below 65 NO-GO; deliverable-type requirements lower the score when unassigned but never trigger the cap, because plans and forms can be produced before bid day while capabilities cannot.
+7. **Compliance point values** — met 1.0, assigned deliverable 0.85, at risk 0.6, open deliverable 0.55, mitigable capability gap 0.25, unmitigable 0 — chosen so assigning work visibly moves the score while a capability gap still dominates.
+8. **Company-profile edits are human-only** — the agent receives `HUMAN_ONLY_ACTION` with a pointer to `civicbid_simulate_company_change`, so the demo's decisive move is agent-recommended and human-executed.
+9. **Staging after approval supersedes the approved decision and clears the approval** — a revised recommendation must be re-approved; the superseded decision stays in history with its status.
+10. **Reset keeps the state version monotonic** — a reset bumps the version rather than returning to 1, so an agent holding an old version never mistakes a reset for the same state.
+11. **The brief can be generated on a stale approval but says so** — the human's approval stands as recorded; the brief carries the staleness note rather than blocking, so the person sees both facts.
+12. **The JV approval package requirement applies whenever single bonding is below the minimum or a JV is confirmed** — either condition means the bid goes in as a joint venture, so the package is due.
+13. **Read-only tool calls are logged without bumping the state version** — the timeline shows every invocation, while `sinceStateVersion` deltas remain about business changes only.
+14. **`civicbid_get_context` and `civicbid_get_workspace_state` stay separate** — they overlap, but the second carries the version-delta contract prompt two depends on; descriptions are sharpened instead of merging.
+15. **No profile-editing tool** — the boundary is part of the story; the interface is the only path.
+16. **The Tool Console is labelled a testing aid** — it runs the same handlers so any browser can exercise the tools, but it is never presented as WebMCP.
+17. **Synthetic data only, no network, no model API** — the demo must be free, deterministic, and available unchanged through judging.
+18. **Documentation and tests are a separate lane with their own files** — two engineers never edit the same file; findings in other lanes' files are reported with patches rather than edited.

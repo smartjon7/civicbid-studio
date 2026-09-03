@@ -11,7 +11,8 @@
     "lint": "oxlint",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check": "npm run typecheck && npm run lint && npm run test && npm run build"
+    "check": "npm run typecheck && npm run lint && npm run test && npm run scan:secrets && npm run build",
+    "scan:secrets": "node scripts/scan-secrets.mjs"
   },
   "dependencies": {
     "react": "^19.2.8",

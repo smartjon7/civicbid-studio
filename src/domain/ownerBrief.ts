@@ -161,11 +161,14 @@ export function buildOwnerBrief(state: AppState, options: OwnerBriefOptions, met
     candidates[0].lines.pop();
     out = render();
   }
-  if (out.words > options.maximumWords) {
-    // Last resort: shorten the longest remaining line.
-    const longest = ordered.reduce((best, s) => (s.lines.join(' ').length > best.lines.join(' ').length ? s : best), ordered[0]);
-    const words = longest.lines.join(' ').split(/\s+/);
-    longest.lines = [words.slice(0, Math.max(12, words.length - (out.words - options.maximumWords) - 1)).join(' ') + '…'];
+  // Last resort: shorten the longest remaining line, repeatedly, until within budget.
+  guard = 0;
+  while (out.words > options.maximumWords && guard++ < 50) {
+    const longest = ordered.reduce((best, s) => (countWords(s.lines.join(' ')) > countWords(best.lines.join(' ')) ? s : best), ordered[0]);
+    const words = longest.lines.join(' ').split(/s+/).filter((w) => w.length > 0);
+    if (words.length <= 6) break;
+    const keep = Math.max(6, words.length - (out.words - options.maximumWords) - 1);
+    longest.lines = [words.slice(0, keep).join(' ') + '…'];
     out = render();
   }
 
